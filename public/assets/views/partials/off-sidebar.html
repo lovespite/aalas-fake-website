@@ -1,0 +1,31 @@
+<button ng-click="toggle('off-sidebar');" class="course-nav btn btn-default" tooltip-placement="left"
+  uib-tooltip="Course Navigation">
+  <i class="ti ti-align-justify btn-themed"></i>
+</button>
+<div class="sidebar-content panel-body panel-white no-radius no-padding" perfect-scrollbar wheel-propagation="false"
+  suppress-scroll-x="true">
+  <div class="panel-heading border-bottom themed no-radius">
+    <h4 class="panel-title">
+      <a class="hotlink" ng-click="view.gotoCourse()">
+        <span ng-bind="::view.course.title"></span>
+      </a>
+    </h4>
+  </div>
+  <div class="panel-body no-padding">
+    <ul class="fa-ul">
+      <li class="setting-box" ng-class="::{'current':lesson.id==view.lesson.id}"
+        ng-repeat="lesson in view.course.lessons track by lesson.id">
+        <span class="setting-title">
+          <i ng-show="lesson.status==='complete'" class="icon-status"
+            ng-class="lesson.status==='complete'?'fa-li fa fa-check-square fa-check-square text-success':''"></i>
+          <a class="text-dark hotlink" ng-click="view.gotoLesson(lesson.id)">{{::$index+1}}. {{::lesson.title}}</a>
+        </span>
+      </li>
+      <li class="setting-box" ng-if="view.course.hasExam">
+        <span class="setting-title">
+          <a class="text-dark hotlink" ng-click="view.gotoLesson(0)">{{view.course.lessons.length+1}}. Final Exam</a>
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

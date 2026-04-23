@@ -1,0 +1,1 @@
+app.filter("greaterThan",function(){return function(items){return items=items.filter(function(item){return item.branchPrice>0})}});

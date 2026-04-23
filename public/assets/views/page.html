@@ -1,0 +1,62 @@
+<section id="page-title">
+  <div class="row">
+    <div class="col-sm-8">
+      <h1 class="mainTitle">
+        <span ng-bind-html="::view.course.title"></span>
+        <span class="badge badge-warning vertical-align-top"
+          ng-if="$state.includes('app.authoring.review');">Review</span>
+      </h1>
+      <span class="mainDescription">Lesson &nbsp;</span>
+      <span class="mainDescription" ng-bind="::view.lesson.ordinal"></span>
+      : <span class="mainDescription" ng-bind-html="::view.lesson.title"></span>
+    </div>
+  </div>
+</section>
+<div class="container-fluid container-fullw bg-white">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-themed" id="panel6"
+        ng-repeat="item in view.items | offset: view.currentPage*view.itemsPerPage | limitTo: view.itemsPerPage">
+        <div class="panel-heading border-bottom themed">
+          <h5 class="panel-title" ng-bind-html="::item.title"></h5>
+        </div>
+        <div class="panel-body">
+          <div froala-view="::item.content"></div>
+        </div>
+      </div>
+      <div ng-if="view.items.length > 0">
+        <ul class="pagination pagination-blue">
+          <li ng-if="view.lesson.previousLesson!==0">
+            <a href="#" ng-click="view.gotoLesson(view.lesson.previousLesson)">« Prev Lesson</a>
+          </li>
+          <li ng-if="view.prevPageVisible()">
+            <a href="#" ng-click="view.prevPage()">« Prev</a>
+          </li>
+          <li ng-repeat="n in view.range()" ng-class="{active: n == view.currentPage}" ng-click="view.setPage(n)">
+            <a href="#">{{n+1}}</a>
+          </li>
+          <li ng-if="view.nextPageVisible()">
+            <a href="#" ng-click="view.nextPage()">Next »</a>
+          </li>
+          <li ng-if="view.lesson.nextLesson!==0">
+            <a href="#" ng-click="view.gotoLesson(view.lesson.nextLesson)">Next Lesson »</a>
+          </li>
+          <li ng-if="view.lesson.hasPracticeQuestions">
+            <a href="#" ng-click="view.gotoLesson(-1)">Practice Questions »</a>
+          </li>
+          <li ng-if="view.course.hasExam">
+            <a href="#" ng-click="view.gotoLesson(0)">Take Exam »</a>
+          </li>
+        </ul>
+        <span class="pull-right">
+          <button class="btn btn-default btn-o" ng-click="view.feedback();">
+            <i class="fa fa-comment"></i>
+            Comment
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-include src="'/assets/views/partials/off-sidebar.html'" id="off-sidebar" class="sidebar" toggleable
+  parent-active-class="app-offsidebar-open"></div>

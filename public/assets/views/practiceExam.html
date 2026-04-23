@@ -1,0 +1,66 @@
+<section id="page-title">
+  <div class="row">
+    <div class="col-sm-8">
+      <h1 class="mainTitle">
+        Practice Questions
+        <span class="badge badge-warning vertical-align-top"
+          ng-if="$state.includes('app.authoring.review');">Review</span>
+      </h1>
+      <span class="mainDescription" ng-bind-html="::view.exam.title"></span>
+    </div>
+  </div>
+</section>
+<div class="container-fluid container-fullw bg-white">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-themed" ng-attr-id="{{'panel'+page.ordinal}}" ng-repeat="question in view.exam.questions">
+        <div class="panel-heading themed" ng-switch on="question.type">
+          <div class="text-small" ng-switch-when="2">{{($index +1) + '. ' + 'Multiple Choice/Multiple Answer - select
+            all correct answers'}}</div>
+          <div class="text-small" ng-switch-when="3">{{($index +1) + '. ' + 'True/False - select one answer'}}</div>
+          <div class="text-small" ng-switch-default>{{($index +1) + '. ' + 'Multiple Choice/Single Answer - select one
+            answer'}}</div>
+        </div>
+        <div class="panel-body text-dark" ng-switch on="question.type">
+          <div class="stem" ng-bind-html="::question.content"></div>
+          <p ng-if="question.showFeedback" class="alert alert-block fade-in text-large"
+            ng-class="question.correct?'alert-success':'alert-danger'">
+            <i ng-class="question.correct?'ti-check':'ti-close'"></i>
+            <span
+              ng-bind-html="question.correct? question.feedbackCorrect || 'Correct': question.feedbackIncorrect || 'Incorrect' | unsafe"></span>
+          </p>
+          <hr>
+          <div ng-repeat="answer in ::question.answers">
+            <div ng-switch-when="2" class="checkbox clip-check check-primary">
+              <input type="checkbox" ng-model="answer.checked" id="{{'checkbox'+answer.id}}" checked=""
+                name="{{::question.id}}" value="{{::answer.id}}">
+              <label class="text-dark" for="{{'checkbox'+answer.id}}" ng-bind-html="::answer.content"></label>
+            </div>
+            <div ng-switch-when="3" class="radio clip-radio radio-primary">
+              <input type="radio" ng-change="view.checkAnswer(question,answer.response)" ng-model="question.response"
+                ng-attr-id="{{'radio'+answer.id}}" name="{{::question.id}}" value="{{::answer.id}}">
+              <label class="text-dark" for="{{'radio'+answer.id}}" ng-bind-html="::answer.content"></label>
+            </div>
+            <div ng-switch-default class="radio clip-radio radio-primary">
+              <input type="radio" ng-change="view.checkAnswer(question,answer.response)" ng-model="question.response"
+                ng-attr-id="{{'radio'+answer.id}}" name="{{::question.id}}" value="{{::answer.id}}">
+              <label class="text-dark" for="{{'radio'+answer.id}}" ng-bind-html="::answer.content"></label>
+            </div>
+          </div>
+          <div ng-switch-when="2">
+            <hr>
+            <button class="btn btn-themed btn-o" ng-click="view.checkMultipleAnswer(question)">Check Answer</button>
+          </div>
+        </div>
+      </div>
+      <div class="toolbar-tools pull-right">
+        <span><button type="submit" class="btn btn-themed" ng-click="view.gotoLesson();">Return to Lesson <i
+              class="fa fa-arrow-circle-up"></i></button> </span>
+        <span ng-if="view.exam.nextLesson>0"><button type="submit" class="btn btn-themed"
+            ng-click="view.nextLesson();">Next Lesson <i class="fa fa-arrow-circle-right"></i></button> </span>
+        <span ng-if="view.exam.hasExam"><button type="submit" class="btn btn-themed" ng-click="view.gotoExam()"
+            ;>Proceed to Final Exam <i class="fa fa-arrow-circle-right"></i></button></span>
+      </div>
+    </div>
+  </div>
+</div>

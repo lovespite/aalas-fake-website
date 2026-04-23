@@ -1,0 +1,572 @@
+GET https://aalaslearninglibrary.org/api/Course/5739/GenerateExam
+
+{
+    "id": 8126485,
+    "title": "Introduction to VA Biosecurity Concepts",
+    "questions": [
+        {
+            "id": 56154,
+            "content": "VA policies on research use of hazardous agents is found in which handbook?",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 1,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 124031,
+                    "content": "1200.08",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 131167,
+                    "content": "1200.06\r\n\r\n",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 124030,
+                    "content": "1200.07",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 131166,
+                    "content": "1200.05",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56171,
+            "content": "What is the term for a select agent and toxin that appears on both the CDC and USDA lists?",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 1,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 797330,
+                    "content": "Overlap agent",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 797333,
+                    "content": "Overlay agent",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 797331,
+                    "content": "Duplicate agent",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 797332,
+                    "content": "Companion agent",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56158,
+            "content": "In general, the terms \"biosafety\" and \"biosecurity\" are very similar in meaning and can often be used interchangeably.\r\n",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 3,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 373998,
+                    "content": "True",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 382407,
+                    "content": "False",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56163,
+            "content": "Regarding the access control portion of a biosecurity plan, which is true?",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 7,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 124036,
+                    "content": "Access control must be 24 hours per day, 7 days a week.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 130747,
+                    "content": "Photo identification badges must be issued and displayed at all times.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 797328,
+                    "content": "Intrusion alarms are working.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 797329,
+                    "content": "Non-public areas are labeled restricted.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 363873,
+                    "content": "All of the Above",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 364850,
+                    "content": "None of the Above",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56152,
+            "content": "A VA researcher corresponds with a research colleague overseas and arranges to safely transfer a select agent, but does not receive proper regulatory approval to do so.  If the transfer proceeds without proper approvals, what type of violation would occur?",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 6,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 116965,
+                    "content": "Biosafety",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 797322,
+                    "content": "Biotechnical",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 334424,
+                    "content": "Biosecurity",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 369813,
+                    "content": "None of the Above",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56155,
+            "content": "The term &quot;permissible amount&quot; is a term used to describe certain select agents. What does this term refer to?",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 1,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 133876,
+                    "content": "Amount of a toxin that a PI is allowed to have under their control and not be subject to select agent regulations",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 90818,
+                    "content": "Amount of a select agent that may be used in a laboratory with approval from CDC or USDA to conduct select agent research",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 116968,
+                    "content": "Amount of a toxin that can be used for research on a yearly basis with approval from CDC or USDA",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 334425,
+                    "content": "Amount of a biological select agent that can be used for research on a monthly basis with approval from CDC or USDA",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56169,
+            "content": "A vulnerability assessment is a systematic evaluation that identifies how hazardous agents might be attenuated or inactivated in a laboratory setting.",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 3,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 376808,
+                    "content": "True",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 381936,
+                    "content": "False",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56168,
+            "content": "<p>How can hazardous material be controlled?</p>",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 1,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 130750,
+                    "content": "Hazardous agent inventories should be conducted annually.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 334432,
+                    "content": "Hazardous agents not currently in use and for which there are no immediate plans for use must be transferred to another laboratory, destroyed, or disposed of according to VHA and local policy.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 133879,
+                    "content": "Hazardous agents may be shared among labs without approval as long as one investigator at each facility has approval to use the agent.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 334431,
+                    "content": "New agents can be acquired once the protocol is submitted for review.",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56176,
+            "content": "Which activity is part of each individual&#39;s responsibililties to ensure that a proper biosecurity plan is in place? ",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 2,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 130754,
+                    "content": "Be familiar with biosecurity regulations and policies (national and local).\r\n \r\n \r\n",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 90827,
+                    "content": "Report any unusual activities.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 334434,
+                    "content": "Follow all security procedures.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 131174,
+                    "content": "Complete the required initial and annual training.",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56175,
+            "content": "Laboratories must be registered with CDC or USDA APHIS _______ obtaining select agents or toxins.",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 1,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 130753,
+                    "content": "within a week of",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 116975,
+                    "content": "within 30 days of",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 133882,
+                    "content": "within 60 days of",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 116974,
+                    "content": "prior to",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56177,
+            "content": "You can share keys, cardkeys, or computer passwords with friends if they are approved to enter laboratories that store hazardous agents or toxins.",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 3,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 373036,
+                    "content": "True",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 382259,
+                    "content": "False",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56179,
+            "content": "If you receive a request for records or data that may contain information which, if disclosed, may possibly compromise national security, you should communicate this to: \r\n",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": null,
+            "feedbackIncorrect": null,
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 7,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 124040,
+                    "content": "The ACOS for R&D (research chief).",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 133884,
+                    "content": "The hospital FOIA Officer.\r\n",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 363875,
+                    "content": "All of the Above",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 364852,
+                    "content": "None of the Above",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        }
+    ]
+}

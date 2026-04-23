@@ -1,0 +1,76 @@
+<section id="page-title">
+  <div class="row">
+    <div class="col-sm-8">
+
+      <h1 class="mainTitle"><span ng-bind-html="::view.cert.title"></span></h1><span
+        class="mainDescription hidden-sm"><span>Certificate Program</span></span>
+    </div>
+  </div>
+</section>
+<div class="container-fullw bg-white">
+  <div class="row">
+    <div class="col-sm-12">
+      <p ng-if="view.cert && !view.course.free && !view.member.status" class="alert alert-block alert-danger"
+        class="text-danger">Access to this course is not available in the Free version. If you are a member of a
+        subscribing group, use the Group Contact button at the top of this page for Help.</p>
+
+      <p ng-if="!view.member.status" class="alert alert-block alert-danger" class="text-danger">You are currently using
+        the free version of the AALAS Learning Library. Credit for this certification and its courses will not appear on
+        your transcript. When you get a subscription seat, all free coursework will appear on your transcript.</p>
+
+      <p ng-if="view.cert.completed" class="alert alert-block alert-success text-success"><i
+          class="ti-check text-large"></i> <span>You have earned a certificate in this program. Access your certificate
+          on your transcript or download it here: </span><a ng-click="view.getTrainingCertificate(view.cert.certid);"><i
+            class="fa fa-file-pdf-o"></i></p>
+
+      <div class="panel panel-themed" ng-if="view.cert.introCourses.length">
+
+        <div class="panel-heading themed">
+          <div> Introduction to Program:</div>
+        </div>
+
+        <div class="panel-body">
+          <ul class="fa-ul">
+            <li ng-repeat="introCourse in ::view.cert.introCourses track by introCourse.id"><i
+                ng-class="introCourse.completed?'fa-li fa fa-check-square fa-check-square text-success':''"></i> <a
+                class="text-black hotlink" ui-sref="app.library.course({id:introCourse.id})">{{::$index+1}}.
+                {{::introCourse.title}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-themed" ng-if="view.cert.requiredCourses.length">
+
+        <div class="panel-heading themed">
+          <div>Required Courses: <span ng-bind="::view.cert.requiredCourses.length"></span></div>
+        </div>
+
+        <div class="panel-body">
+          <ul class="fa-ul">
+            <li ng-repeat="requiredCourse in ::view.cert.requiredCourses track by requiredCourse.id"><i
+                ng-class="requiredCourse.completed?'fa-li fa fa-check-square fa-check-square text-success':''"></i> <a
+                class="text-black hotlink" ui-sref="app.library.course({id:requiredCourse.id})">{{::$index+1}}.
+                {{::requiredCourse.title}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-themed" ng-if="view.cert.electiveCourses.length">
+
+        <div class="panel-heading themed">
+          <div> Elective Courses Required: <span ng-bind="::view.cert.requiredElectiveCount"></span></div>
+        </div>
+
+        <div class="panel-body">
+          <ul class="fa-ul">
+            <li ng-repeat="electiveCourse in ::view.cert.electiveCourses track by electiveCourse.id"><i
+                ng-class="electiveCourse.completed?'fa-li fa fa-check-square fa-check-square text-success':''"></i> <a
+                class="text-black hotlink" ui-sref="app.library.course({id:electiveCourse.id})">{{::$index+1}}.
+                {{::electiveCourse.title}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

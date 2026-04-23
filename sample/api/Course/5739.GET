@@ -1,0 +1,39 @@
+GET https://aalaslearninglibrary.org/api/Course/5793
+
+{
+    "id": 5793,
+    "free": true,
+    "title": "Human Research Protection Training",
+    "ceuRace": null,
+    "race": false,
+    "hasExam": true,
+    "ceu": 3.25,
+    "content": null,
+    "lessons": [
+        {
+            "id": 61394,
+            "title": "Introduction",
+            "status": "complete"
+        },
+        {
+            "id": 61395,
+            "title": "When HHS Regulations Apply",
+            "status": "active"
+        },
+        {
+            "id": 61396,
+            "title": "What is Human Subjects Research?",
+            "status": "active"
+        },
+        {
+            "id": 61412,
+            "title": "Institutional Review Boards",
+            "status": "none"
+        },
+        {
+            "id": 61413,
+            "title": "Independent Review of Research",
+            "status": "none"
+        }
+    ]
+}

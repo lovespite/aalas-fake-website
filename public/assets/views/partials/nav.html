@@ -1,0 +1,282 @@
+<div class="search-form">
+  <a class="s-open" href="#"><i class="ti-search"></i></a>
+  <form class="navbar-form" role="search">
+    <a class="s-remove" href="#" ng-toggle-class="search-open" target=".navbar-form"><i class="ti-close"></i></a>
+    <div class="form-group">
+      <input type="text" class="form-control" style="background-color: white !important" ng-model="searchTerm"
+        placeholder="Search Course Title Keywords">
+      <button class="btn search-button" type="submit" ui-sref="app.search({id:searchTerm})"><i
+          class="ti-search"></i></button>
+    </div>
+  </form>
+</div>
+<ul class="navigator">
+  <li ui-sref-active="active">
+    <a ui-sref="app.dashboard">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-home"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Dashboard</span>
+        </div>
+      </div>
+    </a>
+  </li>
+  <li ng-class="{'active open':$state.includes('app.library')}">
+    <a href="javascript:void(0)">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-book"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Libraries </span>
+          <i class="icon-arrow"></i>
+        </div>
+      </div>
+    </a>
+    <ul class="sub-menu" ng-class="{'pre-scrollable' : app.layout.isSidebarClosed}">
+      <li ng-repeat="library in libraries track by library.id" ui-sref-active="active" ng-if="library.items.length">
+
+        <a href="javascript:void(0)"><span ng-bind="::library.title"></span><i
+            class="icon-arrow vertical-align-top"></i></a>
+        <ul class="sub-menu">
+          <li ng-repeat="series in ::library.items track by series.id" ui-sref-active="active"
+            ng-if="series.items.length">
+
+            <a href="javascript:void(0)"><span ng-bind="::series.title"></span> <i
+                class="icon-arrow vertical-align-top"></i></a>
+            <ul class="sub-menu">
+              <li ng-repeat="course in ::series.items track by course.id" ui-sref-active="active">
+                <a ui-sref="app.library.course({id:course.id})"><span ng-bind="::course.title"></span></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+  </li>
+
+  <li ng-class="{'active open':$state.includes('app.cert')}" ng-if="certs.length">
+    <a href="javascript:void(0)">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-medall"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Certificate Programs </span>
+          <i class="icon-arrow"></i>
+        </div>
+      </div>
+    </a>
+    <ul class="sub-menu">
+      <li ng-repeat="cert in certs track by cert.id" ui-sref-active="active">
+        <a ui-sref="app.cert({id:cert.id})"><span ng-bind="::cert.title"></span></a>
+      </li>
+    </ul>
+  </li>
+
+  <li ng-class="{'active open':$state.includes('app.customCourse')}"
+    ng-if="subscription.hasCustomCourses && groupCourses.length">
+    <a href="javascript:void(0)">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-agenda"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Group Courses </span>
+          <i class="icon-arrow"></i>
+        </div>
+      </div>
+    </a>
+    <ul class="sub-menu">
+      <li ng-repeat="course in groupCourses" ui-sref-active="active">
+        <a ui-sref="app.customCourse.course({id:course.id})"><span ng-bind="::course.title"></span></a>
+      </li>
+    </ul>
+  </li>
+  <li ng-class="{'active open':$state.includes('app.track')}" ng-if="tracks.length">
+    <a href="javascript:void(0)">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-agenda"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Tracks </span>
+          <i class="icon-arrow"></i>
+        </div>
+      </div>
+    </a>
+    <ul class="sub-menu">
+      <li ng-repeat="track in tracks track by track.id" ui-sref-active="active" ng-if="track.items.length">
+        <a><span ng-bind="::track.title"></span><i class="icon-arrow vertical-align-top"></i></a>
+        <ul class="sub-menu">
+          <li ng-repeat="course in track.items track by course.id" ui-sref-active="active">
+            <a ui-sref="app.track.course({id:course.id})"><span ng-bind="::course.title"></span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li ng-class="{'active open':$state.includes('app.free')}" ng-if="free.length && !member.status">
+    <a href="javascript:void(0)">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-gift"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Free Courses </span>
+          <i class="icon-arrow vertical-align-top"></i>
+        </div>
+      </div>
+    </a>
+    <ul class="sub-menu">
+      <li ng-repeat="library in free track by library.id" ui-sref-active="active" ng-if="library.items.length">
+        <a><span ng-bind="::library.title"></span><i class="icon-arrow vertical-align-top"></i></a>
+        <ul class="sub-menu">
+          <li ng-repeat="series in ::library.items track by series.id" ui-sref-active="active"
+            ng-if="series.items.length">
+            <a><span ng-bind="::series.title"></span> <i class="icon-arrow vertical-align-top"></i></a>
+            <ul class="sub-menu">
+              <li ng-repeat="course in ::series.items track by course.id" ui-sref-active="active">
+                <a ui-sref="app.free.course({id:course.id})"><span ng-bind="::course.title"></span></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li ng-class="{'active open':$state.includes('app.race')}" ng-if="race.length">
+    <a href="javascript:void(0)">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-pulse"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">RACE Courses </span>
+          <i class="icon-arrow vertical-align-top"></i>
+        </div>
+      </div>
+    </a>
+    <ul class="sub-menu">
+      <li ng-repeat="course in race track by course.id" ui-sref-active="active">
+        <a ui-sref="app.race.course({id:course.id})"><span ng-bind="::course.title"></span></a>
+      </li>
+    </ul>
+  </li>
+  <li ng-class="{'active open':$state.includes('app.authoring')}" ng-if="subscription.hasCustomCourses && roles.author">
+    <a ng-click="gotoAuthoring();">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-pencil-alt"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Authoring</span>
+        </div>
+      </div>
+    </a>
+  </li>
+  <li ng-class="{'active open':$state.includes('app.coordinator')}" ng-if="roles.monitor">
+    <a href="javascript:void(0)">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-wand"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Group Coordinator </span>
+          <i class="icon-arrow"></i>
+        </div>
+      </div>
+    </a>
+    <ul class="sub-menu">
+      <li ui-sref-active="active">
+        <a ui-sref="app.coordinator.console"><span>Console</span></a>
+      </li>
+      <li ui-sref-active="active" ng-if="subscription.isGroupCoordinator">
+        <a ui-sref="app.coordinator.groupprofile"><span>Group Profile</span></a>
+      </li>
+      <li ng-hide="true" ui-sref-active="active" ng-if="subscription.isGroupCoordinator">
+        <a ui-sref="app.coordinator.groupEmailTemplates"><span>Email Templates</span></a>
+      </li>
+      <li ui-sref-active="active" ng-if="subscription.hasCustomCourses && subscription.isGroupCoordinator">
+        <a ui-sref="app.coordinator.copycourses"><span>Copy Courses</span></a>
+      </li>
+      <li ui-sref-active="active" ng-if="roles.coordinator && group.type!='branch'">
+        <a ui-sref="app.coordinator.trainingroles"><span>Training Plans</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.coordinator.reports"><span>Reports</span></a>
+      </li>
+    </ul>
+  </li>
+  <li ng-class="{'active open':$state.includes('app.admin')}" ng-if="roles.admin">
+    <a href="javascript:void(0)">
+      <div class="item-content">
+        <div class="item-media">
+          <i class="ti-star"></i>
+        </div>
+        <div class="item-inner">
+          <span class="title">Admin </span>
+          <i class="icon-arrow"></i>
+        </div>
+      </div>
+    </a>
+    <ul class="sub-menu">
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.search"><span>Master Search</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.console"><span>Console</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.orders"><span>Orders</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.trainingCertificates"><span>Training Certificates</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.authoring.search"><span>Snip Edit</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.replacecourse"><span>Replace Course</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.news"><span>News</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.help"><span>Help Topics</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.emailTemplates"><span>Email Templates</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.reports"><span>Reports</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.plans"><span>Pricing Plans</span></a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.admin.addOns"><span>AddOns</span></a>
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <div class="item-content">
+      <div class="item-media">
+      </div>
+      <div class="item-inner">
+        <span style="position: relative;" id="google_translate_element"></span>
+      </div>
+    </div>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+      }
+    </script>
+    <script type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  </li>
+</ul>

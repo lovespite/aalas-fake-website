@@ -1,0 +1,3 @@
+node_modules/
+.playwright-data/
+mock_data/

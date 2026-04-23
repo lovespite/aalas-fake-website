@@ -1,0 +1,59 @@
+<div class="row bg-white">
+  <div class="main-login col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="AALAS Learning Library">
+    </div>
+    <div class="box-login">
+      <form class="form-login" method="post">
+        <fieldset>
+          <legend>Sign in to your account</legend>
+          <p ng-if="view.message" ng-bind="view.message" class="alert alert-block alert-danger text-danger"></p>
+
+          <div class="form-group">
+            <span class="input-icon">
+
+              <input type="text" autocomplete="off" class="form-control" id="username" name="username"
+                data-ng-model="view.loginData.username" placeholder="Username"> <i class="fa fa-user"></i>
+            </span>
+          </div>
+
+          <div class="form-group">
+            <span class="input-icon">
+              <input type="password" autocomplete="off" id="password" class="form-control password"
+                data-ng-model="view.loginData.password" name="password" placeholder="Password"> <i
+                class="fa fa-lock"></i>
+              <a ui-sref="login.forgot">I forgot my password</a>
+            </span>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary pull-right" id="loginButton" data-ng-click="view.login()">Login <i
+                class="fa fa-arrow-circle-right"></i></button>
+          </div>
+
+          <div class="new-account">
+            Don't have an enrollment?
+            <a ui-sref="login.accesscode">Enroll now!</a>
+          </div>
+
+        </fieldset>
+      </form>
+      <fieldset
+        style="background: #ffffff; border: 1px solid #e6e8e8; border-radius: 5px;margin: 20px 0 20px 0; padding: 25px;position: relative;">
+        <legend>or, sign in through your institution</legend>
+        <div class="form-group">
+          <label for="sso">Please select the name of your institution</label>
+
+          <select
+            ng-options="ssoGroup.strIDP as ssoGroup.strTitle for ssoGroup in view.ssoGroups track by ssoGroup.strIDP"
+            ng-model="view.idp" class="form-control" name="sso"></select>
+        </div>
+        <div class="form-actions">
+          <button ng-disabled="!view.idp" class="btn btn-primary pull-right" data-ng-click="view.loginSSO()">Continue <i
+              class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </fieldset>
+    </div>
+    <div class="copyright">&copy; Copyright <span class="current-year">{{::app.year}}</span> by American Association for
+      Animal Laboratory Sciences. All Rights Reserved.</div>
+  </div>
+</div>

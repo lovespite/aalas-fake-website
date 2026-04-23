@@ -1,0 +1,1 @@
+app.filter("offset",function(){return function(input,start){return start=+start,input.slice(start)}});

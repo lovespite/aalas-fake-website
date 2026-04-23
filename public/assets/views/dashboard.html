@@ -1,0 +1,44 @@
+
+<section id="page-title" class="padding-top-15 padding-bottom-15">
+    <div class="row">
+        <div class="col-sm-7">
+            <h1 class="mainTitle">Welcome to the AALAS Learning Library</h1>
+        </div>
+    </div>
+</section>
+<div class="container-fullw bg-white">
+    <div class="row">
+        <div class="col-md-8 hidden-sm hidden-xs" ng-if="view.content.length">
+            <div class="panel panel-themed no-radius" ng-repeat="news in view.content">
+                <div class="panel-heading border-bottom themed no-radius">
+                    <h5 class="panel-title">{{::news.title}}</h5>
+                </div>
+                <div class="panel-body border-bottom" froala-view="::news.content"></div>
+            </div>
+        </div>
+        <div class="col-md-4" ng-if="view.activity.length">
+            <div class="panel panel-white no-radius">
+                <div class="panel-heading border-bottom themed">
+                    <h4 class="panel-title">Recent Activity</h4>
+                </div>
+                <div class="panel-body panel-themed">
+                    <ul class="timeline-xs margin-top-15 margin-bottom-15">
+                        <li ng-repeat="event in view.activity" ng-class="{'true':'success', 'false':'warning'}[event.completed]" class="timeline-item">
+                            <div class="margin-left-15">
+                                <div class="text-muted text-small">
+                                    <span>{{::event.activityDate | amTimeAgo}}</span>
+                                </div>
+                                <p ng-switch="event.entity">
+                                    <span ng-switch-when="E"><span ng-switch="::event.completed"><span ng-switch-when="true">Passed </span><span ng-switch-when="false">Started </span></span>Exam for </span>
+                                    <span ng-switch-when="C"><span ng-switch="::event.completed"><span ng-switch-when="true">Completed </span><span ng-switch-when="false">Started </span></span>Course in </span>
+                                    <a class="text-info" ng-switch-when="C" ui-sref="app.library.course({id:event.courseId})">{{::event.title}}</a>
+                                    <a class="text-info" ng-switch-when="E" ui-sref="{{event.completed ? 'app.library.examresults({id:event.courseId})' : 'app.library.examresume({id:event.courseId})'}}">{{::event.title}}</a>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

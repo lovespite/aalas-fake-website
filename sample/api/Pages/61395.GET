@@ -1,0 +1,144 @@
+GET https://aalaslearninglibrary.org/api/Pages/61395
+
+{
+    "course": {
+        "id": 5793,
+        "title": "Human Research Protection Training",
+        "hasExam": true,
+        "lessons": [
+            {
+                "id": 61394,
+                "title": "Introduction",
+                "status": "complete",
+                "active": false,
+                "ordinal": 0,
+                "race": false,
+                "hasPracticeQuestions": false,
+                "pages": null,
+                "questions": null,
+                "courseId": 0
+            },
+            {
+                "id": 61395,
+                "title": "When HHS Regulations Apply",
+                "status": "active",
+                "active": false,
+                "ordinal": 0,
+                "race": false,
+                "hasPracticeQuestions": false,
+                "pages": null,
+                "questions": null,
+                "courseId": 0
+            },
+            {
+                "id": 61396,
+                "title": "What is Human Subjects Research?",
+                "status": "active",
+                "active": false,
+                "ordinal": 0,
+                "race": false,
+                "hasPracticeQuestions": false,
+                "pages": null,
+                "questions": null,
+                "courseId": 0
+            },
+            {
+                "id": 61412,
+                "title": "Institutional Review Boards",
+                "status": "none",
+                "active": false,
+                "ordinal": 0,
+                "race": false,
+                "hasPracticeQuestions": false,
+                "pages": null,
+                "questions": null,
+                "courseId": 0
+            },
+            {
+                "id": 61413,
+                "title": "Independent Review of Research",
+                "status": "none",
+                "active": false,
+                "ordinal": 0,
+                "race": false,
+                "hasPracticeQuestions": false,
+                "pages": null,
+                "questions": null,
+                "courseId": 0
+            }
+        ]
+    },
+    "lesson": {
+        "id": 61395,
+        "nextLesson": 61396,
+        "ordinal": 2,
+        "hasPracticeQuestions": true,
+        "previousLesson": 61394,
+        "title": "When HHS Regulations Apply"
+    },
+    "pages": [
+        {
+            "id": 237092,
+            "title": "Protecting People in Research",
+            "content": "<p><strong>Introduction</strong></p>\n\n<p>Scientific research is encouraged because society stands to benefit from:\n</p>\n\n<ul>\n\t<li>A better understanding of human biology and behavior;\n\t</li>\n\t<li>New ways to improve health; and\n\t</li>\n\t<li>Better treatments or social programs.</li>\n</ul>\n\n<p>But in order for this to happen, the research community must earn and maintain the public&rsquo;s trust. One way the research community accomplishes this is by following ethical guidelines and adhering to applicable research regulations.</p>\n\n<p>Much of the biomedical and behavioral research that seeks to benefit individuals in our society involves human subjects &ndash; those individuals who participate in the research. Without them, the research couldn&rsquo;t happen.</p>\n<figure style=\"text-align: center;\"><img alt=\"lab staff looking at computer\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/people-in-research-1.jpg\"></figure>\n\n<p><strong>The Belmont Report</strong>\n\t<br>The U.S. has regulations to protect research subjects that are based on a core set of ethical principles. Three principles<strong>&mdash;respect for persons, beneficence, and justice&mdash;</strong>were identified and explained in the 1979 Belmont Report.</p>\n\n<p>These Belmont Principles became the ethical foundation of the first comprehensive set of Federal regulations to protect human subjects in research, enacted shortly after the Belmont Report was published. While the regulations have been updated since that time, their ethical foundation remains the same.</p>\n\n<p>For more information on the Belmont Report, go to: <a data-fr-linked=\"true\" href=\"https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html\">https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html</a>.</p>\n<figure style=\"text-align: center;\"><img alt=\"infographic of Belmont Report\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/Belmont-report.jpg\"></figure>\n",
+            "status": false,
+            "ordinal": 0,
+            "lessonId": 0,
+            "highlights": null
+        },
+        {
+            "id": 237096,
+            "title": "Overview of the Common Rule",
+            "content": "<p>The first Federal human subjects protection regulations were created in response to concerns about how some medical research was being conducted at the time. Since this research was primarily health-related, the Federal Health Department (what is now the Department of Health and Human Services, or HHS) oversaw the development of the regulations. </p>\n\n<p>Currently, the <strong>HHS Office for Human Research Protections (or OHRP)</strong> is responsible for oversight of these regulations for HHS. The HHS regulations, which can be found in the Code of Federal Regulations at 45 C.F.R. Part 46, provide basic protections for people who participate in research that comes under HHS&rsquo;s purview. </p>\n\n<figure><img alt=\"OHRP logo\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top; display: block;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/OHRP-Logo.jpg\"></figure>There are five subparts to these regulations.\n<br>&bull; Subpart A establishes basic protections for research subjects generally\n<br>&bull;&nbsp;Subparts B, C, and D provide additional protections for certain vulnerable groups in research\n<br>&bull; Subpart E establishes requirements for registration of institutional review boards (IRBs) <p></p>\n\n<p>Subpart A of the regulations is referred to as the <strong>Common Rule</strong> because many other Federal departments and agencies have also adopted it to protect participants in the research they conduct or fund. The Common Rule provides a broad set of protections for research subjects. These protections include review and approval of research protocols by IRBs and requirements for informed consent and privacy and confidentiality protection, among others. </p>\n\n<p>Check out our infographics to find out how research volunteers are protected: <a href=\"https://www.hhs.gov/ohrp/education-and-outreach/about-research-participation/protecting-research-volunteers/index.html\" rel=\"noopener noreferrer\" target=\"_blank\">https://www.hhs.gov/ohrp/education-and-outreach/about-research-participation/protecting-research-volunteers/why-regulations/index.html.</a></p>\n\n<figure><img alt=\"infographic on protecting research volunteers\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top; display: block;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/Protecting-Research-page.jpg\"></figure>",
+            "status": false,
+            "ordinal": 0,
+            "lessonId": 0,
+            "highlights": null
+        },
+        {
+            "id": 237097,
+            "title": "Common Rule Videos",
+            "content": "<p>Find out more about IRBs and informed consent by watching these short videos.</p>\n\n<p>Video 1 &ndash; How IRBs Protect Human Research Participants (06:45)\n\t<br><span class=\"fr-video fr-draggable fr-active\" contenteditable=\"false\"><iframe width=\"768\" height=\"432\" src=\"https://www.youtube.com/embed/U8fme1boEbE?rel=0&cc_load_policy=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen=\"\" class=\"fr-draggable\"></iframe></span>\n</p>\n\n<p style=\"margin-top: 30px;\">Video 2 &ndash; Informed Consent for Research: What to Expect (08:08)\n\t<br><span class=\"fr-video fr-draggable fr-active\" contenteditable=\"false\"><iframe width=\"768\" height=\"432\" src=\"https://www.youtube.com/embed/Y7uI3sM9wtc?rel=0&cc_load_policy=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen=\"\" class=\"fr-draggable\"></iframe></span>\n</p>\n",
+            "status": false,
+            "ordinal": 0,
+            "lessonId": 0,
+            "highlights": null
+        },
+        {
+            "id": 237098,
+            "title": "Recent Revisions to the Common Rule",
+            "content": "<p>The Common Rule (subpart A of the HHS regulations) was recently revised. These revisions became effective in 2018, but its compliance date was delayed until January 21, 2019. Nevertheless, the revised rule is officially called the &ldquo;2018 Requirements,&rdquo; although many continue to refer to it as the &ldquo;revised Common Rule,&rdquo; or simply the &ldquo;new Rule.&rdquo; </p>\n\n<p>In general, research initiated on or after January 21, 2019 must comply with the revised Common Rule, and research initiated before this date must continue to comply with the pre-2018 Common Rule. Institutions may choose to transition the latter research to the revised Common Rule, but they are not required to do so. </p>\n\n<p>For now, at many institutions, both sets of regulations continue to be in operation for different research projects. Because there are distinct differences between the two versions of the Common Rule, particularly with regard to the requirements for informed consent, exemptions, and continuing review, it is vital that investigators and IRBs know which version of the Common Rule a research project is under.</p><p>\n<br></p>\n\n<figure><img alt=\"general compliance date for the revised common rule January 21, 2019\" style=\"margin: 5px auto; width: 817px; text-align: center; vertical-align: top; display: block;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/General-compliance.jpg\"></figure>",
+            "status": false,
+            "ordinal": 0,
+            "lessonId": 0,
+            "highlights": null
+        },
+        {
+            "id": 237099,
+            "title": "The Common Rule Departments and Agencies",
+            "content": "<p>As we mentioned, in addition to HHS, many Federal departments and agencies also follow the Common Rule. HHS-funded research must comply with both the Common Rule and the other subparts of the regulations. However, some of the other Federal departments and agencies have only adopted the Common Rule and not the other subparts of the HHS regulations.</p>\n\n<p>Each Common Rule department or agency is responsible for oversight of the research that it supports or conducts. Each of them may have its own policies or a slightly nuanced interpretation of certain provisions of the Common Rule that differs from HHS&rsquo;s interpretations. </p>\n\n<p>For example, if you are receiving funding from the Department of Education for a research study, you would direct your questions about the Common Rule and protecting research participants to the program officers at the Department of Education.<strong> If you have a question or concern about human subjects protections, compliance, or oversight, it is important to ask the department or agency that is supporting your research. </strong></p>\n\n<figure><img alt=\"federal agencies and deparments that follow the Common rule\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top; display: block;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/Common-rule-department-and-agencies.jpg\"></figure>\n",
+            "status": false,
+            "ordinal": 0,
+            "lessonId": 0,
+            "highlights": null
+        },
+        {
+            "id": 237100,
+            "title": "HHS Offices and Agencies",
+            "content": "<p><strong>The HHS Office for Human Research Protections (OHRP)</strong></p>\n\n<p>OHRP is responsible for the regulatory oversight of human subjects research that HHS supports or conducts or that institutions choose to place under OHRP&rsquo;s authority. </p>\n\n<p>OHRP:</p>\n\n<ul>\n<li>Develops guidance; Provides interpretation;\n</li>\n<li>Educates the regulated community; and\n</li>\n<li>Enforces compliance for the HHS regulations for human research protections at 45 CFR part 46.</li>\n</ul>\n\n<p></p>\n\n<p>To preserve its independence in regulating HHS-funded research, OHRP is under the Office of the Assistant Secretary for Health and separate from other HHS components that fund or conduct HHS-regulated research.</p>\n\n<p><strong>Other HHS Offices and Agencies</strong></p>\n\n<p>As a large federal department, HHS has numerous agencies and offices that serve different functions. For example, the <strong>National Institutes of Health (NIH) and the Centers for Disease Control and Prevention (CDC)</strong> are both part of HHS and they fund human subjects research to varying extents. </p>\n\n<p>The <strong>U.S. Food and Drug Administration (FDA)</strong> is also a part of HHS. Part of FDA&rsquo;s broad mission includes ensuring the safety, efficacy, and security of drugs, biological products, and medical devices available to the American public. </p>\n\n<p>The FDA has its own regulations that apply to the clinical investigations it oversees. These regulations align with the Common Rule, but also differ in some important ways. <strong>While there is an ongoing effort to harmonize them, it is important for investigators and IRBs to know which regulations are applicable for a particular research project.</strong> </p>\n\n<ul>\n<li>For example, research funded by a private company to test a new drug may have to comply with the FDA regulations because it involves an FDA-regulated product, but not the Common Rule because it does not involve HHS support.</li>\n<li>However, an NIH funded study that involves the research use of an FDA-regulated drug may need to comply with both sets of regulations &ndash; the FDA regulations because the drug is an FDA-regulated product, and the Common Rule and its subparts because the research is funded by NIH, which is part of HHS.</li></ul>\n\n<p>Since the FDA is part of HHS, when it funds human subjects research, that research would be regulated by OHRP and must comply with the HHS regulations at 45 CFR 46, which includes the Common Rule.\n</p>\n<figure style=\"text-align: center;\"><img alt=\"OHRP logo\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/OHRP-Logo.jpg\"> &nbsp; <img alt=\"National Institutes of Health (NIH) building\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/HHS-Buildings.jpg\"> &nbsp; <img alt=\"U.S. Food and Drug Administration sign\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/HHS-FDA-Sign.jpg\">\n\n</figure>",
+            "status": false,
+            "ordinal": 0,
+            "lessonId": 0,
+            "highlights": null
+        },
+        {
+            "id": 237101,
+            "title": "Applying the Common Rule",
+            "content": "<p><strong>The Relationship Between Regulations and Institutional Policies</strong></p><p>The Common Rule applies to certain human subjects research that is supported or conducted by a Common Rule agency. However, not all research is supported by a Common Rule agency. For these studies, there is not a comprehensive set of regulations for the protection of research subjects. </p><p>However, many research institutions choose to apply the Common Rule to all of their human subjects research regardless of funding source. They can do this formally through their institution&rsquo;s assurance filed with OHRP, or they can adopt the Common Rule requirements as institutional policy, in which case the institution uses the Common Rule framework for the purpose of their internal oversight of research.</p><p>In addition, institutions implement their own institutional policies and procedures, which may be more protective than the regulatory requirements. Institutions may have a mechanism to enforce their own requirements, even though the Federal government may not have regulatory authority over research when it is not supported by a Common Rule agency.</p><p style=\"text-align: center;\"><strong>If you have questions about your institution&rsquo;s policies and procedures, contact your institution&rsquo;s human research protection program or IRB office to get more information. </strong></p><p><br></p><p><strong>Federalwide Assurances</strong></p><p>In order to receive HHS funding to conduct certain human subjects research, institutions must have an active assurance on file with OHRP. This assurance is called an FWA, which stands for Federalwide Assurance. Through the FWA, institutions commit to comply with the regulations, comply with additional human subjects regulations and policies as applicable, establish certain required written procedures, and support IRB activities and review. Filing an FWA is a straightforward process. </p><p>You can find information on how to get started on OHRP&#39;s website at<a href=\"https://www.hhs.gov/ohrp/register-irbs-and-obtain-fwas/index.html\" rel=\"noopener noreferrer\" target=\"_blank\"> https://www.hhs.gov/ohrp/register-irbs-and-obtain-fwas/fwas/index.html.</a> Contact OHRP at <a href=\"mailto:IRBorFWA@hhs.gov\">IRBorFWA@hhs.gov</a> if you have questions about this.</p><p>You can watch the <a href=\"https://www.youtube.com/watch?v=N-MmuqHJOnE&feature=youtu.be\" target=\"_blank\">video on the assurance process</a> to learn about the requirements related to the FWA application and step-by-step instructions for the FWA submission process.</p><p>Other Common Rule agencies rely on FWAs; however, some require other types of assurances as well. Institutions or investigators should contact their funding agency to find out what type of assurance is required before research funding can be provided. <strong><br></strong>\n<br>\n<img alt=\"doctor talking to patient\" style=\"margin: 5px auto; width: 300px; text-align: center; vertical-align: top; display: block;\" src=\"https://aalaslearninglibrary.org/Images/Courses/Course5793/Applying-common-rule.jpg\">\n</p>",
+            "status": false,
+            "ordinal": 0,
+            "lessonId": 0,
+            "highlights": null
+        }
+    ]
+}

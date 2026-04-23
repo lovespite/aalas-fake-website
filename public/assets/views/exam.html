@@ -1,0 +1,72 @@
+<section id="page-title">
+  <div class="row">
+    <div class="col-sm-8">
+      <h1 class="mainTitle"> Final Exam </h1>
+      <span class="mainDescription" ng-bind="::view.exam.title"></span>
+    </div>
+  </div>
+</section>
+<div class="container-fullw bg-white">
+  <div class="row margin-bottom-20">
+    <div class="col-sm-12">
+      <div class="panel panel-themed" ng-attr-id="{{'panel'+page.ordinal}}"
+        ng-repeat="question in ::view.exam.questions">
+        <div class="panel-heading themed" ng-switch on="question.type">
+
+          <div class="text-small" ng-switch-when="2">{{($index +1) +' of '+view.exam.questions.length + ': Multiple
+            Choice/Multiple Answer - Select all correct answers'}}</div>
+          <div class="text-small" ng-switch-when="3">{{($index +1) + ' of ' +view.exam.questions.length+ ': True/False -
+            select one answer'}}</div>
+          <div class="text-small" ng-switch-when="4">{{($index +1) + ' of ' +view.exam.questions.length+ ': Short Answer
+            - type your answer'}}</div>
+          <div class="text-small" ng-switch-default>{{($index +1) + ' of ' +view.exam.questions.length+ ': Multiple
+            Choice/Single Answer - Select one answer'}}</div>
+        </div>
+
+
+        <div class="panel-body text-dark" ng-switch on="question.type">
+          <div class="stem" ng-bind-html="::question.content"></div>
+          <div ng-if="question.image"><img ng-src="{{question.image}}"></div>
+          <hr />
+          <div ng-repeat="answer in question.answers">
+            <div ng-switch-when="2" class="checkbox clip-check check-primary">
+              <input type="checkbox" ng-change="view.saveMultipleAnswer(view.exam.id,question.id)"
+                ng-model="answer.response" id="{{'checkbox'+answer.id}}" name="{{::question.id}}"
+                value="{{::answer.id}}">
+
+              <label class="text-dark" for="{{'checkbox'+answer.id}}" ng-bind-html="::answer.content">
+              </label>
+            </div>
+            <div ng-switch-when="3" class="radio clip-radio radio-primary">
+              <input type="radio" ng-change="view.saveAnswer(view.exam.id,question.id,answer.id)"
+                ng-model="question.response" ng-attr-id="{{'radio'+answer.id}}" name="{{::question.id}}"
+                value="{{::answer.id}}">
+
+              <label class="text-dark" for="{{'radio'+answer.id}}" ng-bind-html="::answer.content">
+              </label>
+            </div>
+            <div ng-switch-default class="radio clip-radio radio-primary">
+              <input type="radio" ng-change="view.saveAnswer(view.exam.id,question.id,answer.id)"
+                ng-model="question.response" ng-attr-id="{{'radio'+answer.id}}" name="{{::question.id}}"
+                value="{{::answer.id}}">
+
+              <label class="text-dark" for="{{'radio'+answer.id}}" ng-bind-html="::answer.content">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pull-right">
+        <span>
+          <button type="submit" class="btn btn-themed" ng-show="nextPage==null" ng-click="view.scoreExam()">
+            Score Exam <i class="fa fa-arrow-circle-right"></i>
+          </button>
+        </span>
+        <span>
+          <button class="btn btn-default btn-o" ng-click="view.feedback();"><i class="fa fa-comment"></i>
+            Comment</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

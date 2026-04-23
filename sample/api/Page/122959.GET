@@ -1,0 +1,3 @@
+GET https://aalaslearninglibrary.org/api/Page/122959
+
+{"hasExam":true,"status":"active"}

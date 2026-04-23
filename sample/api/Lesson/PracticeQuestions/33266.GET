@@ -1,0 +1,287 @@
+GET https://aalaslearninglibrary.org/api/Lesson/PracticeQuestions/33266
+
+{
+    "id": 33266,
+    "hasExam": true,
+    "courseId": 3117,
+    "title": "Part I: Basic Concepts of Biosecurity",
+    "questions": [
+        {
+            "id": 56153,
+            "content": "A VA research technician begins work on a hazardous select agent, but does not receive proper laboratory training to work with that agent. &nbsp;What type of violation has occurred?",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": "",
+            "feedbackIncorrect": "",
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 6,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 797323,
+                    "content": "Biotechnical",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 90817,
+                    "content": "Biosecurity",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 116967,
+                    "content": "Biosafety",
+                    "response": true,
+                    "code": null
+                },
+                {
+                    "id": 369814,
+                    "content": "None of the Above",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56152,
+            "content": "A VA researcher corresponds with a research colleague overseas and arranges to safely transfer a select agent, but does not receive proper regulatory approval to do so.  If the transfer proceeds without proper approvals, what type of violation would occur?",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": "",
+            "feedbackIncorrect": "",
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 6,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 116965,
+                    "content": "Biosafety",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 797322,
+                    "content": "Biotechnical",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 334424,
+                    "content": "Biosecurity",
+                    "response": true,
+                    "code": null
+                },
+                {
+                    "id": 369813,
+                    "content": "None of the Above",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56150,
+            "content": "Biosecurity includes actions and planning to prevent unauthorized:",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": "",
+            "feedbackIncorrect": "",
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 7,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 75530,
+                    "content": "Disruption of laboratories due to terrorist incidents, natural disasters, or destructive events.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 133874,
+                    "content": "Removal or misuse of microbiological agents or hazardous agents.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 131165,
+                    "content": "Removal or misuse of sensitive materials such as data, equipment, or computers.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 364848,
+                    "content": "None of the Above",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 363871,
+                    "content": "All of the Above",
+                    "response": true,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56151,
+            "content": "What is an important goal of biosecurity training&gt;",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": "",
+            "feedbackIncorrect": "",
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 1,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 124029,
+                    "content": "Prevent materials found in research laboratories from being used for unintended purposes such as bioterrorism.\r\n",
+                    "response": true,
+                    "code": null
+                },
+                {
+                    "id": 334423,
+                    "content": "Prevent laboratory accidents that could expose personnel to hazardous agents.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 90816,
+                    "content": "Educate laboratory directors on their role in providing a safe working environment.",
+                    "response": false,
+                    "code": null
+                },
+                {
+                    "id": 334422,
+                    "content": "Educate research administrators on the importance of providing appropriate protective equipment to employees that conduct research involving hazardous agents.",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56158,
+            "content": "In general, the terms \"biosafety\" and \"biosecurity\" are very similar in meaning and can often be used interchangeably.\r\n",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": "",
+            "feedbackIncorrect": "",
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 3,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 382407,
+                    "content": "False",
+                    "response": true,
+                    "code": null
+                },
+                {
+                    "id": 373998,
+                    "content": "True",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        },
+        {
+            "id": 56157,
+            "content": "VA considers select agents and toxins plus other chemicals and radiation sources to be hazardous, and considers them to have the potential to be used as tools for bioterrorism.",
+            "ordinal": 0,
+            "title": null,
+            "feedback": null,
+            "correct": false,
+            "examQuestion": false,
+            "feedbackCorrect": "",
+            "feedbackIncorrect": "",
+            "practiceQuestion": false,
+            "status": false,
+            "mark": false,
+            "type": 3,
+            "lessonId": 0,
+            "response": 0,
+            "image": null,
+            "updateDate": null,
+            "createDate": null,
+            "statusDate": null,
+            "version": null,
+            "answers": [
+                {
+                    "id": 375264,
+                    "content": "True",
+                    "response": true,
+                    "code": null
+                },
+                {
+                    "id": 383274,
+                    "content": "False",
+                    "response": false,
+                    "code": null
+                }
+            ],
+            "responses": null
+        }
+    ],
+    "nextLesson": 33267
+}
