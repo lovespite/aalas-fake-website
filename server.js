@@ -56,6 +56,36 @@ function makeTokenResponse(username = 'demo') {
   };
 }
 
+const courseMemoryIndex = [];
+
+function buildMemoryCourseIndex() {
+  fs.readdirSync(path.join(MOCK_DIR, 'api', 'Course')).forEach((file) => {
+    if (file.endsWith('.meta.json')) return; // 跳过 meta 文件
+    if (file.endsWith('.json')) {
+      try {
+        const content = fs.readFileSync(path.join(MOCK_DIR, 'api', 'Course', file), 'utf8');
+        const json = JSON.parse(content);
+        if (json && json.id) {
+          courseMemoryIndex.push({
+            id: json.id,
+            title: (json.title + "").toLowerCase()
+          });
+        }
+      } catch (_) { /* skip */ }
+    }
+  });
+
+  console.log(`已构建课程内存索引，共 ${courseMemoryIndex.length} 条记录`);
+}
+
+buildMemoryCourseIndex();
+app.get('/api/SearchTitle/:query', (req, res) => {
+  const { query } = req.params;
+  const q = query.toLowerCase();
+  const results = courseMemoryIndex.filter((c) => c.title && c.title.includes(q));
+  res.json(results);
+});
+
 // AngularJS authService 走 POST /token （含 grant_type=password 和 refresh_token 两种）
 app.post('/token', (req, res) => {
   const u = (req.body && (req.body.username || req.body.userName)) || 'demo';
@@ -135,11 +165,6 @@ app.post('/api/Page/:id', (req, res) => {
 app.use('/api', (req, res, next) => {
   const fullPath = '/api' + req.path; // req.path 是被 mount 截掉前缀后的剩余路径
 
-  // if (fullPath.startsWith('/api/Page/') && req.method === 'POST') {
-  //   console.log(`        ↳ 模拟 Page POST 的特殊处理，返回 { hasExam: true, status: "active" }`);
-  //   return res.json({ hasExam: true, status: "active" });
-  // }
-
   const search = req.originalUrl.includes('?')
     ? '?' + req.originalUrl.split('?')[1]
     : '';
@@ -155,6 +180,11 @@ app.use('/api', (req, res, next) => {
     } catch (_) {
       /* not found, try next */
     }
+  }
+
+  if (/\/api\/Page\/\d+$/.test(fullPath) && req.method === 'POST') {
+    console.log(`        ↳ 模拟 Page API：${fullPath} → 200 with hasExam=true`);
+    return res.json({ hasExam: true, status: "active" });
   }
 
   console.warn(`        ↳ ⚠ 无 mock：${req.method} ${fullPath}`);

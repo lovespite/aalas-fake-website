@@ -24,7 +24,8 @@
  */
 
 'use strict';
-
+// import * as cheerio from 'cheerio';
+const cheerio = require('cheerio');
 const { chromium } = require('playwright');
 const fs = require('fs-extra');
 const path = require('path');
@@ -91,6 +92,7 @@ function isApiResponse(response) {
 
   if (url.pathname.startsWith('/api/Exam/SaveAnswer/')) return false; // 排除考试答题接口，这个必须实时响应，不能被缓存文件覆盖
   if (url.pathname === '/api/Exam/ScoreExam') return false; // 排除考试评分接口，这个必须实时响应，不能被缓存文件覆盖
+  if (/\/api\/Page\/\d+$/.test(url.pathname)) return false; // 这个接口只返回元数据，没有实质内容，且课程页会频繁调用，没必要保存
 
   const rt = req.resourceType();
   if (rt !== 'xhr' && rt !== 'fetch') return false;
@@ -340,6 +342,31 @@ async function fetchJsonInPage(page, url, token, method = 'GET', body = null, my
 }
 
 /**
+ * 在页面上下文中发起 fetch 请求，专门用于抓取静态资源（图片 / 视频 / 字体）。
+ * 由于资源较大，且不需要 JSON 解析，直接返回 ArrayBuffer 二进制数据，由 Node 端写盘。
+ * 注意：fetchJsonInPage 也可用于抓取静态资源，但它会尝试解析 JSON，且性能较低（尤其是大文件），因此单独封装了这个函数。
+ */
+async function fetchStaticResourceInPage(page, url) {
+
+  return page.evaluate(
+    async ({ url }) => {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) {
+          return { status: r.status, error: `HTTP ${r.status}` };
+        }
+        const buffer = [...await r.bytes()]; // 浏览器端无法直接返回 ArrayBuffer，转换成普通数组传回 Node 端再转回 Buffer
+
+        return { status: r.status, buffer };
+      } catch (e) {
+        return { status: 0, error: String(e && e.message ? e.message : e) };
+      }
+    },
+    { url }
+  );
+}
+
+/**
  * 命中本地缓存就直接读盘，否则走网络抓取（顺带由 handleResponse 落盘）。
  * 返回 { status, json, cached }。--force 时绕过缓存。
  */
@@ -392,6 +419,19 @@ async function processCourse(page, link, index, total, token) {
         pr.status === 200 ? (pr.cached ? 'CACHED\n' : 'OK\n') : `FAIL(${pr.status})\n`
       );
     }
+
+    if (r.json.pages && Array.isArray(r.json.pages)) {
+      process.stdout.write(`      → Fetch static resources in lesson pages ... `);
+      const resources = await getPageMultimediaResources(page, r.json);
+      process.stdout.write(`Found ${resources.length} resources\n`);
+      for (const res of resources) {
+        process.stdout.write(`        → Reading ${res.type}: ${res.url} ... `);
+        const r = await saveMultimediaResource(page, res.url);
+        process.stdout.write(
+          r.status === 200 ? (r.cached ? 'CACHED\n' : 'OK\n') : `FAIL(${r.status})\n`
+        );
+      }
+    }
   }
 
   if (course.hasExam) {
@@ -409,6 +449,121 @@ async function processCourse(page, link, index, total, token) {
       process.stdout.write(`      → 生成考试失败，跳过答题和评分\n`);
     }
   }
+}
+// 选择器 -> 媒体类型映射
+const rules = [
+  // 图片
+  { selector: 'img', type: 'image', attrs: ['src', 'data-src', 'data-original', 'data-lazy-src'] },
+  { selector: 'img, source', type: 'image', attrs: ['srcset', 'data-srcset'], srcset: true },
+  { selector: 'picture source', type: 'image', attrs: ['srcset'], srcset: true },
+  { selector: 'link[rel="preload"][as="image"]', type: 'image', attrs: ['href'] },
+
+  // 视频
+  { selector: 'video', type: 'video', attrs: ['src', 'poster', 'data-src'] },
+  { selector: 'video > source', type: 'video', attrs: ['src'] },
+
+  // 音频
+  { selector: 'audio', type: 'audio', attrs: ['src', 'data-src'] },
+  { selector: 'audio > source', type: 'audio', attrs: ['src'] },
+];
+/**
+ * 
+ * @param {*} page 
+ * @param {*} lesson  
+ * @returns {Array<{ type: string, tag: string, attr: string, url: string }>} 资源列表
+ */
+async function getPageMultimediaResources(page, lesson, baseUrl = "", types = null) {
+
+  const seen = new Set();
+  const results = [];
+
+  const push = (type, tag, attr, raw) => {
+    if (!raw) return;
+    const url = normalize(raw, baseUrl);
+    if (!url) return;
+    const key = `${type}|${url}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    if (types && !types.includes(type)) return;
+    results.push({ type, tag, attr, url });
+  };
+
+  const joinedHtml = lesson.pages.map(p => p.content || '').join('\n');
+  const $ = cheerio.load(joinedHtml, { decodeEntities: true });
+
+  // 获取页面上多媒体资源的 URL
+  for (const r in rules) {
+    const rule = rules[r];
+    $(rule.selector).each((_, el) => {
+      for (const attr of rule.attrs) {
+        if (rule.srcset) {
+          const srcset = $(el).attr(attr);
+          if (srcset) {
+            const urls = srcset.split(',').map(s => s.trim().split(' ')[0]);
+            for (const url of urls) {
+              push(rule.type, el.tagName, attr, url);
+            }
+          }
+        } else {
+          push(rule.type, el.tagName, attr, $(el).attr(attr));
+        }
+      }
+    });
+  }
+
+  return results;
+}
+
+function normalize(url, baseUrl) {
+  url = url.trim();
+  if (!url || url.startsWith('data:') || url.startsWith('javascript:')) return '';
+  if (!baseUrl) return url;
+  try {
+    return new URL(url, baseUrl).toString();
+  } catch {
+    return url;
+  }
+}
+
+async function saveMultimediaResource(page, url) {
+  // 保存资源不需要token
+
+  if (!/^https?:\/\//.test(url)) {
+    // 相对路径或协议相对路径，补全成绝对 URL 以便正确构造本地文件路径
+    url = new URL(url, `https://${TARGET_DOMAIN}/`).toString();
+  }
+  const u = new URL(url);
+  const relative = u.pathname.replace(/^\/+/, '');
+  const filePath = path.join(PUBLIC_DIR, relative);
+
+  process.stdout.write(`      → Saving to public/${relative} ... `);
+  if (fs.existsSync(filePath)) {
+    return { status: 200, cached: true };
+  }
+
+  if (filePath.endsWith(".mp4")) {
+    await fs.outputFile(filePath + ".url", url); // mp4 视频文件较大，直接保存 URL 以供后续下载，避免占用过多磁盘空间；其它类型仍然直接保存内容
+    await fs.appendFile(path.join(SAVE_DIR, 'video_resources.txt'), url + '\n'); // 额外记录一个视频 URL 列表，方便后续批量处理
+    return { status: 200, cached: false };
+  }
+
+  if (filePath.endsWith(".mp3")) {
+    await fs.outputFile(filePath + ".url", url); // mp3 音频文件较大，直接保存 URL 以供后续下载，避免占用过多磁盘空间；其它类型仍然直接保存内容
+    await fs.appendFile(path.join(SAVE_DIR, 'audio_resources.txt'), url + '\n'); // 额外记录一个音频 URL 列表，方便后续批量处理
+    return { status: 200, cached: false };
+  }
+
+  const r = await fetchStaticResourceInPage(page, url);
+  if (r.status !== 200) {
+    console.log(`      → 资源抓取失败 (status=${r.status}${r.error ? ', ' + r.error : ''})\n`);
+    return r;
+  }
+
+
+  await fs.outputFile(filePath, Buffer.from(r.buffer));
+  process.stdout.write('OK\n');
+
+  return r;
 }
 
 function randomDelay(min = 300, max = 1200) {

@@ -1,0 +1,40 @@
+<section id="page-title">
+  <div class="row">
+    <div class="col-sm-8">
+      <h1 class="mainTitle">Search Results</h1>
+    </div>
+  </div>
+</section>
+<div class="container-fluid container-fullw bg-white">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="search-classic">
+        <form novalidate class="form-horizontal">
+          <div class="well">
+            <div class="input-group">
+              <input type="text" ng-model="view.query.term" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" ng-click="view.search();" type="submit">
+                  <i class="fa fa-search"></i>
+                  Search
+                </button>
+              </span>
+            </div>
+          </div>
+        </form>
+        <h3>Search results for '{{view.query.term||$stateParams.id}}'</h3>
+        <hr>
+        <div class="search-result" ng-repeat="hit in view.results">
+          <h4>
+            <a ui-sref="app.library.course({id:hit.id})"
+              ng-bind-html="hit.title | htmlToPlaintext | highlight:view.query.term |trust"></a>
+            <a uib-tooltip="Edit Course" ng-if="roles.admin" ui-sref="app.authoring.lessons({id:hit.id})">
+              <i class="fa fa-edit"></i>
+            </a>
+          </h4>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
