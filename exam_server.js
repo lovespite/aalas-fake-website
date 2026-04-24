@@ -19,19 +19,21 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const Database = require("better-sqlite3");
+// 适配 Bun 运行时：使用内置 bun:sqlite，无需原生编译
+const { Database } = require("bun:sqlite");
 
 const PORT = Number(process.env.EXAM_PORT) || 3001;
 const DB_PATH = path.join(__dirname, "exam.db");
 const PUBLIC_DIR = path.join(__dirname, "public", "exam");
 
 if (!fs.existsSync(DB_PATH)) {
-  console.error(`[fatal] 找不到数据库 ${DB_PATH}，请先运行: node build_exam_db.js`);
+  console.error(`[fatal] 找不到数据库 ${DB_PATH}，请先运行: bun run exam:build`);
   process.exit(1);
 }
 
 const db = new Database(DB_PATH, { readonly: true });
-db.pragma("foreign_keys = ON");
+// bun:sqlite 没有 db.pragma()，统一用 exec 设置 PRAGMA
+db.exec("PRAGMA foreign_keys = ON");
 
 const app = express();
 app.disable("x-powered-by");

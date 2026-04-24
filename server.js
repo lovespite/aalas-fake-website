@@ -304,6 +304,18 @@ app.get(/^\/login(\/.*)?$/, async (req, res, next) => {
   next();
 });
 
+// ---------- 4.5 图片走 CDN（如 Cloudflare R2）：/Images/* → 301 到 IMG_CDN ----------
+// 用法：IMG_CDN=https://cdn.example.com node server.js
+// 留空时不启用，仍由本地 public/Images 提供
+const IMG_CDN = (process.env.IMG_CDN || '').replace(/\/+$/, '');
+if (IMG_CDN) {
+  app.get(/^\/Images\/.+/i, (req, res) => {
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.redirect(301, IMG_CDN + req.path);
+  });
+  console.log(`[IMG_CDN] /Images/* → ${IMG_CDN}/Images/*`);
+}
+
 // ---------- 5. 静态资源（CSS/JS/Images/fonts/bower_components 等） ----------
 // extensions: ['html'] 让 /foo 能命中 /foo.html
 app.use(express.static(PUBLIC_DIR, { extensions: ['html'], maxAge: 0 }));

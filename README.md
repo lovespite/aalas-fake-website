@@ -44,22 +44,24 @@
 
 ### 安装依赖
 
+本工程已适配 **Bun 1.x** 运行时（SQLite 走 `bun:sqlite`，无需原生编译）。
+
 ```bash
-yarn install
+bun install
 ```
 
-主要依赖：`express`、`fs-extra`、`playwright`、`better-sqlite3`。
+主要依赖：`express`、`fs-extra`、`playwright`，SQLite 由 Bun 内置 `bun:sqlite` 提供。
 
 ### 一行命令启动
 
 | 命令 | 说明 |
 |---|---|
-| `yarn start` / `yarn serve` | 启动**原站镜像**（http://localhost:3000） |
-| `yarn exam:build` | （重新）构建 `exam.db` |
-| `yarn exam:serve` | 启动**题库练习站点**（http://localhost:3001） |
-| `yarn fetch:assets` | 重新抓取原站静态资源 |
-| `yarn fetch:api` | 重新拦截/录制原站 API 数据（手动模式） |
-| `yarn fetch:api:auto` | 自动模式拦截 API |
+| `bun start` / `bun run serve` | 启动**原站镜像**（http://localhost:3000） |
+| `bun run exam:build` | （重新）构建 `exam.db` |
+| `bun run exam:serve` | 启动**题库练习站点**（http://localhost:3001） |
+| `bun run fetch:assets` | 重新抓取原站静态资源 |
+| `bun run fetch:api` | 重新拦截/录制原站 API 数据（手动模式） |
+| `bun run fetch:api:auto` | 自动模式拦截 API |
 
 ---
 
@@ -83,8 +85,8 @@ yarn install
 **启动**
 
 ```bash
-node server.js              # 默认 3000 端口
-PORT=8080 node server.js    # 指定端口
+bun run server.js              # 默认 3000 端口
+PORT=8080 bun run server.js    # 指定端口
 ```
 
 入口：<http://localhost:3000>，自动跳转到 `/app/dashboard.html`。
@@ -109,7 +111,7 @@ PORT=8080 node server.js    # 指定端口
 - 若结果文件中存在该题 → 用 `result.answers[i].content` 在题目选项中按文本匹配标记 `is_correct=1`（多选会标多个）。
 - 若结果文件中**未出现**该题 → 默认 `q.answers[0]` 为正确答案。
 
-> 重新运行 `yarn exam:build` 会**重建**整张库（先 drop 后 create）。
+> 重新运行 `bun run exam:build` 会**重建**整张库（先 drop 后 create）。
 
 ### 后端 API
 
@@ -139,9 +141,9 @@ PORT=8080 node server.js    # 指定端口
 ### 启动
 
 ```bash
-yarn exam:build          # 首次（或题库变化后）重建 exam.db
-yarn exam:serve          # 启动 → http://localhost:3001
-EXAM_PORT=4000 node exam_server.js   # 指定端口
+bun run exam:build          # 首次（或题库变化后）重建 exam.db
+bun run exam:serve          # 启动 → http://localhost:3001
+EXAM_PORT=4000 bun run exam_server.js   # 指定端口
 ```
 
 ---

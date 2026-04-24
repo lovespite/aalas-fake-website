@@ -46,6 +46,7 @@ const AUTO = args.has('--auto');
 const HEADLESS = args.has('--headless');
 const FORCE = args.has('--force');
 const NO_PROXY = args.has('--no-proxy');
+const NO_EXAM = args.has('--no-exam');
 
 // 已写入磁盘的 URL 集合，用于自动遍历阶段去重 / 等待
 const savedUrls = new Set();
@@ -434,7 +435,7 @@ async function processCourse(page, link, index, total, token) {
     }
   }
 
-  if (course.hasExam) {
+  if (!NO_EXAM && course.hasExam) {
     process.stdout.write(`    → exam GenerateExam ... `);
     // 注意：GenerateExam 每次会生成新试卷，命中本地缓存就跳过；强制刷新用 --force
     const r = await getOrFetchJson(page, `${base}/api/Course/${link.courseId}/GenerateExam`, token);

@@ -2,7 +2,8 @@
 
 const fs = require("fs");
 const path = require("path");
-const Database = require("better-sqlite3");
+// 适配 Bun 运行时：使用内置 bun:sqlite，无需原生编译
+const { Database } = require("bun:sqlite");
 
 const ROOT = __dirname;
 const COURSE_DIR = path.join(ROOT, "mock_data", "api", "Course");

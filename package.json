@@ -5,19 +5,26 @@
   "author": "lovespite",
   "license": "MIT",
   "scripts": {
-    "fetch:assets": "node go-fetch.js",
-    "fetch:api": "node fetch_api_data.js",
-    "fetch:api:auto": "node fetch_api_data.js --auto",
-    "serve": "node server.js",
-    "start": "node server.js",
-    "exam:build": "node build_exam_db.js",
-    "exam:serve": "node exam_server.js"
+    "fetch:assets": "bun run go-fetch.js",
+    "fetch:api": "bun run fetch_api_data.js",
+    "fetch:api:auto": "bun run fetch_api_data.js --auto",
+    "serve": "bun run server.js",
+    "start": "bun run server.js",
+    "exam:build": "bun run build_exam_db.js",
+    "exam:serve": "bun run exam_server.js",
+    "rewrite:pages": "bun run scripts/rewrite_pages_urls.js"
   },
   "dependencies": {
-    "better-sqlite3": "^12.9.0",
     "cheerio": "^1.2.0",
     "express": "^5.2.1",
     "fs-extra": "^11.3.4",
     "playwright": "^1.59.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }
