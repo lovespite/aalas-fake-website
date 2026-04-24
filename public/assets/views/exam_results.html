@@ -1,0 +1,71 @@
+<section id="page-title">
+  <div class="row">
+    <div class="col-sm-8">
+      <h1 class="mainTitle">Exam Results</h1>
+      <span class="mainDescription" ng-bind="view.exam.title"></span>
+    </div>
+  </div>
+</section>
+<div class="container-fluid container-fullw bg-white">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-block" ng-if="view.exam" ng-class="view.exam.passed?'alert-success':'alert-danger'">
+        <h4 class="alert-heading margin-bottom-10">
+          <i ng-class="view.exam.passed?'ti-check':'ti-close'"></i>
+          <span ng-bind="view.exam.passed?' Congratulations, You Passed!':' Sorry, You Failed'"></span>
+        </h4>
+        <p class="margin-bottom-10">You correctly answered {{::view.exam.correctCount}} out of
+          {{::view.exam.questionCount}} items for a score of {{::view.exam.rawScore}}. You needed a score of
+          {{::view.exam.passingScore}} to pass based upon the difficulty of the exam.</p>
+        <p>
+          <a href="#" ui-sref="app.library.exam({id:view.exam.id})" ng-if="!view.exam.passed" class="btn btn-danger">Try
+            Again </a>
+          <a href="#" ui-sref="app.transcript" class="btn btn-o"
+            ng-class="view.exam.passed?'btn-success':'btn-danger'">View Transcript</a>
+        </p>
+      </div>
+      <div ng-if="::view.exam.questions.length">
+        <div class="panel panel-white no-radius">
+          <div class="panel-heading border-bottom">
+            <h4 class="panel-title">
+              Below are the questions you answered
+              <span class="text-danger">incorrectly</span> along with their associated lessons:
+            </h4>
+          </div>
+          <div class="panel-body">
+            <div class="panel panel-white no-radius" ng-repeat="question in ::view.exam.questions">
+              <div class="panel-heading border-bottom bg-light-grey">
+                <div class="panel-title">
+                  <i class="ti-close text-danger"></i>
+                  <span ng-bind-html="::question.content"></span>
+                </div>
+                <br ng-if="::question.feedback">
+                <div ng-if="::!question.feedback" ng-bind="::question.feedback"></div>
+              </div>
+              <div class="panel-body">
+                <div ng-if="::question.responses.length">
+                  <span>You responded:</span>
+                  <ul>
+                    <li ng-repeat="response in question.responses" ng-bind="response.content"></li>
+                  </ul>
+                </div>
+                <div ng-if="::question.answers.length">
+                  <span>The correct answer was:</span>
+                  <ul>
+                    <li ng-repeat="answer in question.answers" ng-bind="::answer.content"></li>
+                  </ul>
+                </div>
+                <hr>
+                <div class="small">
+                  Review this material in
+                  <a href="#" ui-sref="app.library.lesson({id:question.lessonId})" class="hotlink text-dark text-bold"
+                    ng-bind="::question.title"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

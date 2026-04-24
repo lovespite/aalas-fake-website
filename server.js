@@ -103,6 +103,28 @@ function buildCandidatePaths(reqPath, method, search) {
   return out;
 }
 
+// Exam api
+// /api/Exam/SaveAnswer/[:examId]/[questionId]/[:answerId]
+//
+app.post('/api/Exam/SaveAnswer/:examId/:questionId/:answerId', (req, res) => {
+  const { examId, questionId, answerId } = req.params;
+  console.log(`        ↳ 模拟保存考试答案：examId=${examId}, questionId=${questionId}, answerId=${answerId}`);
+  res.status(200).json();
+});
+
+app.post('/api/Exam/ScoreExam', (req, res) => {
+  const { id } = req.body || {};
+  console.log(`        ↳ 模拟评分考试：examId=${id}`);
+  res.status(200).json(id);
+});
+
+app.get('/api/Exam/:examId', (req, res) => {
+
+
+});
+
+
+// Get Page meta
 app.post('/api/Page/:id', (req, res) => {
   res.status(200).json({
     hasExam: true,
@@ -264,6 +286,7 @@ app.use((req, res) => {
   }
   res.status(404).send('Not Found');
 });
+
 
 app.listen(PORT, () => {
   console.log('=========================================================');

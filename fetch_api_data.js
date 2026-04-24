@@ -89,6 +89,9 @@ function isApiResponse(response) {
   const url = new URL(req.url());
   if (url.hostname !== TARGET_DOMAIN) return false;
 
+  if (url.pathname.startsWith('/api/Exam/SaveAnswer/')) return false; // 排除考试答题接口，这个必须实时响应，不能被缓存文件覆盖
+  if (url.pathname === '/api/Exam/ScoreExam') return false; // 排除考试评分接口，这个必须实时响应，不能被缓存文件覆盖
+
   const rt = req.resourceType();
   if (rt !== 'xhr' && rt !== 'fetch') return false;
 
@@ -310,13 +313,18 @@ async function getAuthToken(page) {
  *   - 由于走的是浏览器网络栈，context.on('response') 仍会触发 → handleResponse 会落盘
  *   - 同时把 JSON 直接返回给我们用于驱动后续遍历
  */
-async function fetchJsonInPage(page, url, token) {
+async function fetchJsonInPage(page, url, token, method = 'GET', body = null, myHeaders = {}) {
   return page.evaluate(
-    async ({ url, token }) => {
-      const headers = { Accept: 'application/json' };
+    async ({ url, token, method, body, myHeaders }) => {
+      const headers = { Accept: 'application/json, text/plain, */*', ...myHeaders };
       if (token) headers['Authorization'] = 'Bearer ' + token;
       try {
-        const r = await fetch(url, { method: 'GET', headers, credentials: 'include' });
+        const r = await fetch(url, {
+          method,
+          headers,
+          credentials: 'include',
+          body: body ? JSON.stringify(body) : null
+        });
         const text = await r.text();
         let json = null;
         try {
@@ -327,7 +335,7 @@ async function fetchJsonInPage(page, url, token) {
         return { status: 0, error: String(e && e.message ? e.message : e) };
       }
     },
-    { url, token }
+    { url, token, method, body, myHeaders }
   );
 }
 
@@ -335,7 +343,7 @@ async function fetchJsonInPage(page, url, token) {
  * 命中本地缓存就直接读盘，否则走网络抓取（顺带由 handleResponse 落盘）。
  * 返回 { status, json, cached }。--force 时绕过缓存。
  */
-async function getOrFetchJson(page, urlPath, token, method = 'GET') {
+async function getOrFetchJson(page, urlPath, token, method = 'GET', body = null, headers = {}) {
   const u = new URL(urlPath);
   const localPath = urlToLocalPath(u, method);
   if (!FORCE && (await fs.pathExists(localPath))) {
@@ -346,7 +354,7 @@ async function getOrFetchJson(page, urlPath, token, method = 'GET') {
       /* 损坏的缓存 → 重新抓 */
     }
   }
-  const res = await fetchJsonInPage(page, urlPath, token);
+  const res = await fetchJsonInPage(page, urlPath, token, method, body, headers);
   return { ...res, cached: false };
 }
 
@@ -393,7 +401,54 @@ async function processCourse(page, link, index, total, token) {
     process.stdout.write(
       r.status === 200 ? (r.cached ? 'CACHED\n' : 'OK\n') : `FAIL(${r.status})\n`
     );
+
+    const exam = r.json;
+    if (exam && exam.id) {
+      await getExamResults(page, exam, token);
+    } else {
+      process.stdout.write(`      → 生成考试失败，跳过答题和评分\n`);
+    }
   }
+}
+
+function randomDelay(min = 300, max = 1200) {
+  const t = Math.floor(Math.random() * (max - min + 1)) + min;
+  return new Promise((resolve) => setTimeout(resolve, t));
+}
+
+async function getExamResults(page, exam, token) {
+  const examId = exam.id;
+  process.stdout.write(`      → exam ScoreExam ${examId} ... `);
+  // 必须先模拟答一遍题目
+  for (const q of exam.questions || []) {
+    const qid = q.id;
+    const answerId =
+      q.answers &&
+      q.answers[0] &&
+      q.answers[0].id;
+
+    if (!qid || !answerId) continue;
+
+    // 投递答案
+    await randomDelay(); // 模拟人类操作节奏，避免过快触发反爬机制
+    process.stdout.write(`        → SaveAnswer question ${qid} answer ${answerId} ... `);
+    const r = await fetchJsonInPage(page, `/api/Exam/SaveAnswer/${examId}/${qid}/${answerId}`, token, 'POST');
+    process.stdout.write(r.status === 200 ? 'OK\n' : `FAIL(${r.status}${r.error ? ', ' + r.error : ''})\n`);
+  }
+
+  // 然后请求评分接口拿结果, 注意要带上 完整的 exam body， 注意携带 Content-Type: application/json 头，否则服务器可能无法正确解析请求体（即使 fetch 已经把它序列化了）
+  const r = await fetchJsonInPage(page, `/api/Exam/ScoreExam`, token, 'POST', exam, { 'Content-Type': 'application/json' });
+  if (r.status !== 200) {
+    process.stdout.write(`      → 评分考试失败 (status=${r.status}${r.error ? ', ' + r.error : ''})\n`);
+    return;
+  }
+
+  // 获取详细结果（注意 评分接口只返回试卷ID）
+  const detail = await fetchJsonInPage(page, `/api/Exam/${examId}`, token);
+
+  process.stdout.write(
+    detail.status === 200 ? (r.cached ? 'CACHED\n' : 'OK\n') : `FAIL(${r.status}${detail.error ? ', ' + detail.error : ''})\n`
+  );
 }
 
 /**

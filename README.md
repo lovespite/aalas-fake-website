@@ -1,59 +1,166 @@
-# **Angular 站点本地化 Mock 还原工程**
+# AALAS 离线题库 / 站点 Mock 工程
 
-## **🎯 项目目的 (Project Purpose)**
+> 本项目将一个原本依赖鉴权的 AngularJS (1.x) SPA 完整离线化，并基于其题库数据构建了一个独立的本地考试练习站点。
 
-本项目旨在将一个需要动态身份认证的 **AngularJS (1.x) 单页应用 (SPA)** 完整克隆至本地，实现真正的**完全离线访问**。
+## 🎯 项目概览
 
-由于目标网站是典型的 SPA 架构（数据由后端 API 动态提供，路由由前端接管），传统的静态网页扒站工具（如 HTTrack）无法保留其动态交互和导航逻辑。
+工程包含两条相互独立、可单独使用的产品线：
 
-因此，本项目采用\*\*“无损前端剥离 \+ 后端 API Mock 替换”\*\*的策略：
+| 产线 | 入口 | 端口 | 数据源 | 用途 |
+|---|---|---|---|---|
+| ① 原站镜像 Mock | `server.js` | 3000 | `public/` + `mock_data/` | 离线还原 AngularJS 站点的浏览体验 |
+| ② 题库练习站点 | `exam_server.js` | 3001 | `exam.db` (SQLite) | 基于整理后的题库做单课考试 / 模拟考试 |
 
-1. 原封不动地保留 AngularJS 前端代码、UI 组件和路由树。  
-2. 通过无头浏览器（Playwright）在已登录状态下拦截并保存真实 API 响应的 JSON 数据。  
-3. 在本地使用 Express.js 搭建轻量级 Mock 服务器，接管前端的数据请求，完美“欺骗”前端，使其在脱机状态下正常运行。
+> 两个 server **完全独立**，可以只跑其中一个；也可以同时启动监听不同端口。
 
-最终产物是一个可直接在本地运行、拥有完整原生交互体验的离线知识库/内容站点。
+---
 
-## **📂 目录结构 (Directory Structure)**
+## 📂 目录结构
 
-.  
-├── public/                 \# (阶段一产物) 存放前端静态资源 (HTML, CSS, JS, bower\_components等)  
-├── mock\_data/              \# (阶段二产物) 存放拦截下来的后端 API 数据 (JSON格式)  
-├── download\_assets.js      \# 静态资源自动化抓取脚本  
-├── fetch\_api\_data.js       \# (TODO) 动态 API 数据拦截爬取脚本  
-├── server.js               \# (TODO) 本地 Express Mock 服务器代码  
-├── package.json            \# Node.js 依赖配置  
-└── README.md               \# 项目说明文档
+```
+.
+├── public/                     原站静态资源（HTML / CSS / JS / bower_components）
+│   └── exam/                   ② 题库练习站点的前端（原生 JS，无框架）
+├── mock_data/
+│   └── api/                    ① 原站镜像所需的 API JSON 快照
+│       ├── Course/[id]/GenerateExam.json
+│       └── Exam/[examId].json
+│
+├── go-fetch.js                 阶段一：Playwright 抓取站点静态资源 → public/
+├── fetch_api_data.js           阶段二：Playwright 拦截并保存 API 响应 → mock_data/
+├── server.js                   ① 原站 Mock 服务器
+│
+├── build_exam_db.js            题库整合脚本：mock_data/api/Course + Exam → exam.db
+├── exam.db                     SQLite 题库（由 build_exam_db.js 生成）
+├── exam_server.js              ② 题库练习站点后端 + 静态托管
+│
+├── package.json
+└── README.md
+```
 
-## **🚀 三阶段开发计划 (TODO List)**
+---
 
-### **阶段一：前端静态环境剥离 (已完成)**
+## 🚀 快速开始
 
-**目标：** 获取 Angular 运行所需的所有基础结构和视觉资源。
+### 安装依赖
 
-* \[✅\] 分析目标网站架构，确认其使用的技术栈为 AngularJS 1.x。  
-* \[✅\] 编写基于 Playwright 的全自动静态资源抓取脚本 (go-fetch.js)。  
-* \[✅\] 配置本地代理，绕过网络限制。  
-* \[✅\] 成功拦截并下载目标域名下的 index.html 以及引用的 .js、.css、字体和图片资源，并按原始路径结构存入 public/ 目录。  
-* \[✅\] 手动剥离或注释掉 HTML 中无用的第三方服务加载代码（如 Google Analytics, 第三方支付组件等），净化本地运行环境。
+```bash
+yarn install
+```
 
-### **阶段二：动态 API 数据拦截与存档 (TODO)**
+主要依赖：`express`、`fs-extra`、`playwright`、`better-sqlite3`。
 
-**目标：** 模拟真实用户的浏览行为，提取所有需要认证的文章和目录数据。
+### 一行命令启动
 
-* \[ \] 基于 Playwright 编写新的数据抓取脚本 (fetch\_api\_data.js)。  
-* \[ \] 在脚本中注入登录态 (Cookie 或 LocalStorage Token)。  
-* \[ \] 配置 page.on('response') 拦截器，专门过滤 Fetch/XHR 类型的 API 请求。  
-* \[ \] 编写自动化遍历逻辑：自动访问目录接口获取列表 \-\> 循环访问每篇文章详情页。  
-* \[ \] 将拦截到的 JSON 数据根据原 API 路径映射，自动创建并保存到本地的 mock\_data/ 文件夹中。*(难点：处理 URL 中的 Query 参数和时间戳，确保文件名合法且能被对应查找)*
+| 命令 | 说明 |
+|---|---|
+| `yarn start` / `yarn serve` | 启动**原站镜像**（http://localhost:3000） |
+| `yarn exam:build` | （重新）构建 `exam.db` |
+| `yarn exam:serve` | 启动**题库练习站点**（http://localhost:3001） |
+| `yarn fetch:assets` | 重新抓取原站静态资源 |
+| `yarn fetch:api` | 重新拦截/录制原站 API 数据（手动模式） |
+| `yarn fetch:api:auto` | 自动模式拦截 API |
 
-### **阶段三：本地 Mock 引擎搭建与联调 (TODO)**
+---
 
-**目标：** 重构前后端连接，让本地数据驱动本地前端。
+## ① 原站镜像 Mock — `server.js`
 
-* \[ \] 安装 Express 和相关中间件 (npm install express connect-history-api-fallback cors)。  
-* \[ \] 编写轻量级服务端代码 (server.js)。  
-* \[ \] **配置静态托管：** 将根目录指向 public/。  
-* \[ \] **配置路由 Fallback：** 引入 connect-history-api-fallback，确保 Angular 刷新时前端路由不会报 404 错误。  
-* \[ \] **核心接口劫持：** 拦截前端所有发往 /api/ (或特定前缀) 的请求，将其重定向去读取 mock\_data/ 下对应的 .json 文件并返回给前端。  
-* \[ \] 联调测试：修复由于环境缺失导致的 JS 报错，补全缺失的“占位” API（如用户信息校验接口返回伪造的合法信息），直至页面能在本地流畅无错运行。
+**目的**：在脱机环境下完整重现原 AngularJS SPA 的浏览体验（鉴权、路由、API 全部本地化）。
+
+**实现思路**
+
+1. **前端原封保留** — 直接静态托管 `public/`，不重打包。
+2. **API Mock** — 凡是命中 `/api/*` 的请求都映射到 `mock_data/api/...` 下对应的 JSON 文件返回；命名规则与 `fetch_api_data.js` 一致（带 query 时附 `__q_<md5前8位>`，非 GET 方法附 `.POST` 等后缀）。
+3. **鉴权伪装** — `POST /token` 总是签发一枚 mock token；HTML 响应被注入一段脚本，自动写入 `sessionStorage.ngStorage-authorizationData`，**任意账号密码即可登录**，刷新页面不会丢登录态。
+4. **HTML5 路由兜底** — 兼容 `html5Mode`，深链接（如 `/app/library/course/3`）回退到 `dashboard.html`，但保护 `/assets`、`/bower_components` 等真静态目录不被兜底污染。
+
+**特殊接口**
+
+- `POST /api/Exam/SaveAnswer/:examId/:questionId/:answerId` — 模拟保存答题
+- `POST /api/Exam/ScoreExam` — 模拟评分
+- `POST /api/Page/:id` — 永远返回 `{ hasExam: true, status: "active" }`
+
+**启动**
+
+```bash
+node server.js              # 默认 3000 端口
+PORT=8080 node server.js    # 指定端口
+```
+
+入口：<http://localhost:3000>，自动跳转到 `/app/dashboard.html`。
+
+---
+
+## ② 题库练习站点 — `exam_server.js`
+
+**目的**：将原站零散的考试 JSON 整合为统一的可练习题库，提供独立的"刷题/模拟考"网站，可脱离原站独立运行。
+
+### 数据建模 — `build_exam_db.js`
+
+遍历 `mock_data/api/Course/[courseId]/GenerateExam.json` 与 `mock_data/api/Exam/[examId].json`，输出 SQLite `exam.db`，三张表：
+
+| 表 | 字段 |
+|---|---|
+| `exams` | `id`, `course_id`, `title`, `source` |
+| `questions` | `id`, `exam_id`, `ordinal`, `type` (1=单选 / 2=多选), `title`, `content`, `image` |
+| `answers` | `id`, `question_id`, `answer_id`, `ordinal`, `content`, `is_correct` |
+
+**正确答案推断规则**：考试结果文件中只记录"错题"，所以：
+- 若结果文件中存在该题 → 用 `result.answers[i].content` 在题目选项中按文本匹配标记 `is_correct=1`（多选会标多个）。
+- 若结果文件中**未出现**该题 → 默认 `q.answers[0]` 为正确答案。
+
+> 重新运行 `yarn exam:build` 会**重建**整张库（先 drop 后 create）。
+
+### 后端 API
+
+| Method | Path | 说明 |
+|---|---|---|
+| GET  | `/api/courses` | 课程列表（带题量统计） |
+| GET  | `/api/exam/course/:courseId` | 指定课程的全部题目（不含正确性标记） |
+| POST | `/api/exam/mock` | 模拟考试组卷 `{courseIds:[...], count:30\|50\|100}` |
+| POST | `/api/exam/grade` | 服务端批阅 `{answers:{qid:[aid,...]}}` → 返回总分 + 仅错题 |
+
+> 选项顺序在下发时会被打乱，正确答案永远不在 GET/POST 题目接口中泄露。
+
+### 前端 — `public/exam/`
+
+原生 JS（无框架）+ hash 路由：
+
+- `#/` 首页：两种模式入口、未提交考试续做
+- `#/course` 课程小节考试：搜索 → 点击直接开考
+- `#/mock` 模拟考试：勾选课程 + 选择 30/50/100 题；含 **ALAT / LAT / LATG** 前缀快选预设
+- `#/take` 答题：单/多选自适应、可标记题目（★）、右侧 sticky 题目地图（已答=绿、标记=黄、未答=灰，移动端 ≤820px 自动隐藏）、进度条、答案实时存入 `localStorage`
+- `#/result` 结果：分数、对错统计；红=你的错选，绿=正确答案
+
+辅助模块：
+- `modal.js` — H5 风格 Modal，统一替代 `alert/confirm`
+- `policy.js` — 中英双语使用政策（版权 / 禁商用 / 禁拷贝再分发 / 仅限学习），首次访问强制阅读 ≥10 秒方可"我已知晓"
+
+### 启动
+
+```bash
+yarn exam:build          # 首次（或题库变化后）重建 exam.db
+yarn exam:serve          # 启动 → http://localhost:3001
+EXAM_PORT=4000 node exam_server.js   # 指定端口
+```
+
+---
+
+## 🛠 数据采集工具链（可选）
+
+完整流程是 "**抓资源 → 录 API → 起服务**"，但仓库已自带产物，常规使用**无需重新抓取**。
+
+1. `go-fetch.js` — Playwright 自动化抓取 `public/`（已完成，可重跑刷新）。
+2. `fetch_api_data.js` — Playwright 在登录态下拦截所有 `/api/*` 响应并按 URL 映射写入 `mock_data/api/`，是构建 `exam.db` 的上游数据源。
+
+---
+
+## 📜 使用条款
+
+本项目由 **Lovespite** 创作，**Copyright © 2026 Lovespite. All Rights Reserved.**
+
+- ❌ 禁止任何商业用途
+- ❌ 禁止拷贝、二次创作、再分发
+- ✅ 仅供个人学习使用
+
+详见站点页脚的"使用政策 / Usage Policy"。
