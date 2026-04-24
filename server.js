@@ -118,10 +118,10 @@ app.post('/api/Exam/ScoreExam', (req, res) => {
   res.status(200).json(id);
 });
 
-app.get('/api/Exam/:examId', (req, res) => {
+// app.get('/api/Exam/:examId', (req, res) => {
 
 
-});
+// });
 
 
 // Get Page meta
