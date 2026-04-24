@@ -265,7 +265,7 @@ app.use((req, res) => {
   res.status(404).json({ error: "Not Found", path: req.path });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log("=========================================================");
   console.log(`Exam 服务已启动: http://localhost:${PORT}`);
   console.log(`  db:        ${DB_PATH}`);

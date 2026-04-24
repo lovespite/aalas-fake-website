@@ -330,12 +330,12 @@ app.use((req, res) => {
 });
 
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log('=========================================================');
   console.log(`Mock 服务已启动: http://localhost:${PORT}`);
   console.log(`  public:    ${PUBLIC_DIR}`);
   console.log(`  mock_data: ${MOCK_DIR}`);
-  console.log('  入口：http://localhost:' + PORT + '/  → /app/dashboard.html');
-  console.log('  登录页任意账号密码均可通过；HTML 中已自动注入登录态');
-  console.log('=========================================================');
+  if (IMG_CDN) {
+    console.log(`  图片 CDN:   ${IMG_CDN}/Images/*`);
+  }
 });
