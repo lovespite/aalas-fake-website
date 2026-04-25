@@ -590,11 +590,32 @@ main {
 
 @media (max-width: 820px) {
   .take-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) 52px;
+    gap: 10px;
   }
 
   .q-sidebar {
+    display: block;
+    padding: 8px 6px;
+    top: 64px;
+    max-height: calc(100vh - 80px);
+    border-radius: 8px;
+  }
+
+  .q-sidebar-head,
+  .q-legend {
     display: none;
+  }
+
+  .q-map {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .q-cell {
+    height: 30px;
+    font-size: 11px;
+    border-radius: 5px;
   }
 }
 
@@ -633,6 +654,7 @@ main {
   margin-bottom: 14px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
   user-select: none;
+  position: relative;
 }
 
 .question .q-head {
@@ -641,6 +663,13 @@ main {
   align-items: baseline;
   margin-bottom: 8px;
   gap: 10px;
+}
+
+.q-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .question .q-num {
@@ -769,4 +798,108 @@ main {
   padding: 40px;
   text-align: center;
   color: #6b7280;
+}
+
+/* ---------- 移动端紧凑布局 ---------- */
+@media (max-width: 820px) {
+  main {
+    margin: 12px auto;
+    padding: 0 10px 40px;
+  }
+
+  .topbar {
+    padding: 10px 14px;
+  }
+
+  .topbar h1 {
+    font-size: 17px;
+  }
+
+  .topbar nav a {
+    margin-left: 12px;
+  }
+
+  .card {
+    padding: 14px 14px;
+    margin-bottom: 12px;
+  }
+
+  .toolbar {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .q-progress {
+    top: 52px;
+    padding: 6px 0;
+    gap: 6px;
+  }
+
+  .q-progress .pbar {
+    margin: 0 8px;
+  }
+
+  /* 题目卡片：留出右上角空间给 q-actions（标记 + 类型） */
+  .question {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    padding-top: 38px;
+  }
+
+  .question.marked {
+    padding-left: 12px;
+    border-left-width: 3px;
+  }
+
+  .question .q-head {
+    margin-bottom: 6px;
+    gap: 6px;
+    /* 左侧文字让出 actions 空间 */
+    padding-right: 0;
+  }
+
+  .q-actions {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    gap: 6px;
+  }
+
+  .question .q-content {
+    margin: 4px 0 8px;
+    font-size: 14px;
+  }
+
+  .options li {
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .mark-btn {
+    padding: 2px 8px;
+    font-size: 11px;
+  }
+
+  .tag {
+    margin-left: 0;
+    padding: 1px 6px;
+  }
+
+  .result-summary {
+    padding: 18px 14px;
+  }
+
+  .result-summary .score {
+    font-size: 44px;
+  }
+
+  .course-list {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .course-item {
+    padding: 10px 12px;
+  }
 }

@@ -685,7 +685,7 @@ function viewTake() {
             " ",
             h("span", { class: "muted", style: "font-size:12px" }, q.examTitle || ""),
           ]),
-          h("div", { style: "display:flex;align-items:center;gap:8px" }, [
+          h("div", { class: "q-actions" }, [
             markBtn,
             h("span", { class: "tag" + (q.type === 2 ? " multi" : "") }, q.type === 2 ? "多选" : "单选"),
           ]),
@@ -802,7 +802,9 @@ function viewResult() {
       blocks.push(h("div", { class: "question" }, [
         h("div", { class: "q-head" }, [
           h("div", {}, [h("span", { class: "q-num" }, `Q${idx + 1}.`), " ", h("span", { class: "muted", style: "font-size:12px" }, q.examTitle || "")]),
-          h("span", { class: "tag" + (q.type === 2 ? " multi" : "") }, q.type === 2 ? "多选" : "单选"),
+          h("div", { class: "q-actions" }, [
+            h("span", { class: "tag" + (q.type === 2 ? " multi" : "") }, q.type === 2 ? "多选" : "单选"),
+          ]),
         ]),
         q.title ? h("div", { html: q.title, style: "font-weight:500" }) : null,
         h("div", { class: "q-content", html: q.content || "" }),
