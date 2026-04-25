@@ -20,13 +20,16 @@ const OUT = path.join(ROOT, 'dist_static');
 function rmrf(p) {
   if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true });
 }
-function copyDir(src, dst) {
+function copyDir(src, dst, filter) {
   fs.mkdirSync(dst, { recursive: true });
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
     const s = path.join(src, entry.name);
     const d = path.join(dst, entry.name);
-    if (entry.isDirectory()) copyDir(s, d);
-    else if (entry.isFile()) fs.copyFileSync(s, d);
+    if (entry.isDirectory()) copyDir(s, d, filter);
+    else if (entry.isFile()) {
+      if (filter && !filter(s, entry.name)) continue;
+      fs.copyFileSync(s, d);
+    }
   }
 }
 
@@ -37,22 +40,27 @@ fs.mkdirSync(OUT, { recursive: true });
 console.log('[build] copying public/');
 copyDir(path.join(ROOT, 'public'), OUT);
 
-console.log('[build] copying mock_data/');
-copyDir(path.join(ROOT, 'mock_data'), path.join(OUT, 'mock_data'));
+console.log('[build] copying mock_data/ (skipping *.meta.json)');
+let skippedMeta = 0;
+copyDir(path.join(ROOT, 'mock_data'), path.join(OUT, 'mock_data'), (_src, name) => {
+  if (name.endsWith('.meta.json')) { skippedMeta++; return false; }
+  return true;
+});
+console.log(`        skipped ${skippedMeta} .meta.json file(s)`);
 
 // Cloudflare Pages / Netlify 风格 SPA fallback
 const redirects = [
   '/api/*  /index.html  404',           // 不应触发；有 SW 接管
   '/app/*  /app/dashboard.html  200',   // SPA 深链
   '/login/* /login/signin.html  200',
-  '/*      /app/dashboard.html  200',   // 兜底
+  '/*      /login/signin.html  200',   // 兜底
   '',
 ].join('\n');
 fs.writeFileSync(path.join(OUT, '_redirects'), redirects);
 
-// GitHub Pages: 复制 dashboard.html 为 404.html，让任意未知路径都进 SPA
+// GitHub Pages: 复制 signin.html 为 404.html，让任意未知路径都进 SPA
 fs.copyFileSync(
-  path.join(OUT, 'app', 'dashboard.html'),
+  path.join(OUT, 'login', 'signin.html'),
   path.join(OUT, '404.html')
 );
 
