@@ -14,7 +14,7 @@
  */
 'use strict';
 
-const SW_VERSION = 'aalas-sw-v2';
+const SW_VERSION = 'aalas-sw-v3';
 const MOCK_BASE = '/mock_data';
 const SEARCH_INDEX_URL = MOCK_BASE + '/_index/courses.json';
 
@@ -191,9 +191,13 @@ self.addEventListener('fetch', (event) => {
 
   // 媒体资源 → CDN（仅 GET / HEAD）
   if (MEDIA_CDN && (req.method === 'GET' || req.method === 'HEAD')
-      && MEDIA_EXT_RE.test(url.pathname)
-      && !MEDIA_EXEMPT_PREFIXES.some((p) => url.pathname.startsWith(p))) {
-    event.respondWith(Response.redirect(MEDIA_CDN + url.pathname + url.search, 302));
+    && MEDIA_EXT_RE.test(url.pathname)
+    && !MEDIA_EXEMPT_PREFIXES.some((p) => url.pathname.startsWith(p))) {
+
+    const fileName = url.pathname.split('/').pop();
+    const encodedFileName = encodeURIComponent(fileName);
+    const cdnUrl = MEDIA_CDN + url.pathname.replace(fileName, encodedFileName) + url.search;
+    event.respondWith(Response.redirect(cdnUrl, 302));
     return;
   }
 
