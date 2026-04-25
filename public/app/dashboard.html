@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" data-ng-app="clipApp">
+
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
- <!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-J1K0RK7NK4"></script> -->
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-J1K0RK7NK4"></script> -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-  gtag('config', 'G-J1K0RK7NK4');
-</script>
+        gtag('config', 'G-J1K0RK7NK4');
+    </script>
     <base href="/" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -22,7 +23,7 @@
     <title data-ng-bind="pageTitle()">AALAS Learning Library</title>
     <!-- Google fonts -->
     <!-- <link rel="preconnect" href="https://www.google.com"> -->
-<!-- <link rel="preconnect" href="https://www.gstatic.com" crossorigin> -->
+    <!-- <link rel="preconnect" href="https://www.gstatic.com" crossorigin> -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" /> -->
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
@@ -41,12 +42,16 @@
     <link rel="stylesheet" data-ng-href="/assets/css/themes/{{ app.layout.theme }}.css" />
     <!-- jQuery -->
     <script src="../bower_components/jquery-3.4.1.min.js"></script>
-    <script src="../bower_components/jquery-ui.min.js"></script> 
+    <script src="../bower_components/jquery-ui.min.js"></script>
 </head>
-<body class="bg-white" ng-controller="AppCtrl">
-    <div ui-view id="app" ng-class="{'app-mobile' : app.isMobile, 'app-navbar-fixed' : app.layout.isNavbarFixed, 'app-sidebar-fixed' : app.layout.isSidebarFixed, 'app-sidebar-closed':app.layout.isSidebarClosed, 'app-footer-fixed':app.layout.isFooterFixed}"></div>
 
-    <span us-spinner="{radius:30, width:8, length: 16, position:'fixed'}" spinner-key="appSpinner" spinner-start-active="true"></span>
+<body class="bg-white" ng-controller="AppCtrl">
+    <div ui-view id="app"
+        ng-class="{'app-mobile' : app.isMobile, 'app-navbar-fixed' : app.layout.isNavbarFixed, 'app-sidebar-fixed' : app.layout.isSidebarFixed, 'app-sidebar-closed':app.layout.isSidebarClosed, 'app-footer-fixed':app.layout.isFooterFixed}">
+    </div>
+
+    <span us-spinner="{radius:30, width:8, length: 16, position:'fixed'}" spinner-key="appSpinner"
+        spinner-start-active="true"></span>
 
 
     <!-- Fastclick -->
@@ -58,7 +63,9 @@
     <script src="https://js.braintreegateway.com/web/dropin/1.26.0/js/dropin.min.js"></script>
     <script src="https://js.braintreegateway.com/web/3.72.0/js/three-d-secure.min.js"></script> -->
     <script src="../bower_components/angular/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-messages.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-messages.js"></script> -->
+
+    <script src="../bower_components/angular-messages.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="../bower_components/angular-touch/angular-touch.min.js"></script>
     <script src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
@@ -109,8 +116,10 @@
     <script type="text/javascript" src="../bower_components/froala/js/froala_editor.min.js"></script>
 
     <!-- Include Code Mirror. -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
     <script type="text/javascript" src="../bower_components/bootstrap/js/collapse.js"></script>
     <!-- Include Plugins. -->
     <script type="text/javascript" src="../bower_components/froala/js/plugins/align.min.js"></script>
@@ -181,4 +190,5 @@
     <script src="../assets/js/filters/currentDate.js?v=33"></script>
 
 </body>
+
 </html>

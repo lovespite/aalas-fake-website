@@ -1,11 +1,25 @@
 <!doctype html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="AALAS 题库练习，提供 AALAS 认证考试的在线模拟测试，帮助考生备考 AALAS 认证考试，提升考试通过率。" />
+  <meta name="keywords" content="AALAS, 题库, 练习, 考试, 模拟测试, 认证考试, 备考" />
+  <meta name="author" content="Lovespite" />
+
+  <meta property="og:title" content="AALAS 题库练习 / 考试">
+  <meta property="og:description" content="AALAS 题库练习，提供 AALAS 认证考试的在线模拟测试，帮助考生备考 AALAS 认证考试，提升考试通过率。">
+  <meta property="og:image" content="https://static.aalas.net/Images/favicon-exam.svg">
+
+  <link rel="icon" type="image/svg+xml" href="https://static.aalas.net/Images/favicon-exam.svg">
   <title>AALAS 题库练习 / 考试</title>
   <link rel="stylesheet" href="/style.css" />
+
+  <!-- Cloudflare Turnstile（人机验证）。加载后会暴露 window.turnstile，供 app.js 显式渲染。 -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
+
 <body>
   <header class="topbar">
     <h1><a href="#/" id="brand">📚 AALAS 题库</a></h1>
@@ -15,7 +29,9 @@
     </nav>
   </header>
 
-  <main id="app"><div class="loading">加载中…</div></main>
+  <main id="app">
+    <div class="loading">加载中…</div>
+  </main>
 
   <footer class="foot">
     <span>AALAS题库练习 · © 2026 Lovespite</span>
@@ -26,4 +42,5 @@
   <script src="/policy.js"></script>
   <script src="/app.js"></script>
 </body>
+
 </html>

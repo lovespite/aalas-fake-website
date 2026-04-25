@@ -2,3 +2,5 @@ node_modules/
 .playwright-data/
 mock_data/
 public/Images/
+.env
+.DS_Store

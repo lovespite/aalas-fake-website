@@ -3,6 +3,12 @@
 const $app = document.getElementById("app");
 const STORAGE_KEY = "aalas_exam_session_v1";
 
+// === Cloudflare Turnstile 配置 ===
+// 替换为你在 Cloudflare Dashboard 创建的 Site Key。
+// 测试时可使用官方 dummy key：1x00000000000000000000AA（始终通过）。
+// const TURNSTILE_SITE_KEY = "0x4AAAAAADDHoMAjJ5JCICcf";
+const TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
+
 let coursesCache = null;
 
 // ----------------- 工具 -----------------
@@ -29,16 +35,29 @@ function render(node) {
   window.scrollTo(0, 0);
 }
 
-async function api(method, url, body) {
+async function api(method, url, body, opts) {
+  opts = opts || {};
+  const headers = body ? { "Content-Type": "application/json" } : {};
+  // 优先使用 opts.examSessionToken 显式传入(避免 sessionStorage 不可写时静默失败);
+  // 兜底再回退到 sessionStorage。
+  if (/^\/api\/exam\//.test(url) && !opts.skipExamSession) {
+    const tok = opts.examSessionToken || getStoredExamSessionToken();
+    if (tok) headers["X-Exam-Session"] = tok;
+    else console.warn("[examApi] /api/exam/* 调用但没有可用的会话 token,将被后端拒绝");
+  }
   const res = await fetch(url, {
     method,
-    headers: body ? { "Content-Type": "application/json" } : undefined,
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   });
   if (!res.ok) {
     let msg = `HTTP ${res.status}`;
-    try { const j = await res.json(); msg = j.error || msg; } catch (_) { }
-    throw new Error(msg);
+    let payload = null;
+    try { payload = await res.json(); msg = payload.error || msg; } catch (_) { }
+    const err = new Error(msg);
+    err.status = res.status;
+    err.payload = payload;
+    throw err;
   }
   return res.json();
 }
@@ -56,6 +75,157 @@ function loadSession() {
 }
 function clearSession() {
   try { localStorage.removeItem(STORAGE_KEY); } catch (_) { }
+}
+
+// ===== 考试 API 会话（Turnstile -> /api/session/start 颁发）=====
+function getStoredExamSession() {
+  try {
+    const raw = sessionStorage.getItem(EXAM_SESSION_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !s.token || !s.expiresAt) return null;
+    // 提前 30s 视为过期，避免边界
+    if (s.expiresAt - 30_000 < Date.now()) return null;
+    return s;
+  } catch (_) { return null; }
+}
+function getStoredExamSessionToken() {
+  const s = getStoredExamSession();
+  return s ? s.token : null;
+}
+function clearExamSession() {
+  try { sessionStorage.removeItem(EXAM_SESSION_KEY); } catch (_) { }
+}
+async function ensureExamSession(force) {
+  if (!force) {
+    const s = getStoredExamSession();
+    if (s) return s;
+  }
+  clearExamSession();
+  const cfToken = await requestTurnstileToken("exam-start");
+  if (!cfToken) throw new Error("人机验证未通过");
+  const data = await api("POST", "/api/session/start", { cfTurnstileResponse: cfToken },
+    { skipExamSession: true });
+  if (!data || !data.token) {
+    console.error("[examSession] /api/session/start 返回异常:", data);
+    throw new Error("服务器未返回会话 token");
+  }
+  const sess = { token: data.token, expiresAt: data.expiresAt, quota: data.quota };
+  try {
+    sessionStorage.setItem(EXAM_SESSION_KEY, JSON.stringify(sess));
+    if (!sessionStorage.getItem(EXAM_SESSION_KEY)) {
+      console.warn("[examSession] sessionStorage 写入后读不到,后续仅用内存 token");
+    }
+  } catch (e) {
+    console.warn("[examSession] sessionStorage 写入失败:", e);
+  }
+  console.log("[examSession] 新会话 token=" + data.token.slice(0, 8) + "… expiresAt=" + new Date(data.expiresAt).toISOString());
+  return sess;
+}
+
+// 包装 /api/exam/* 调用：缺会话时自动获取；遇到 401 自动重试一次。
+async function examApi(method, url, body) {
+  let sess = await ensureExamSession();
+  try {
+    return await api(method, url, body, { examSessionToken: sess.token });
+  } catch (e) {
+    if (e.status === 401) {
+      console.warn("[examApi] 收到 401(" + (e.message || "?") + "),清除会话后重试一次");
+      clearExamSession();
+      sess = await ensureExamSession(true);
+      return await api(method, url, body, { examSessionToken: sess.token });
+    }
+    throw e;
+  }
+}
+
+// 等待 Cloudflare Turnstile 脚本加载完成（异步加载，可能晚于首屏）。
+function waitForTurnstile(timeoutMs = 8000) {
+  return new Promise((resolve, reject) => {
+    if (window.turnstile && typeof window.turnstile.render === "function") return resolve(window.turnstile);
+    const start = Date.now();
+    const t = setInterval(() => {
+      if (window.turnstile && typeof window.turnstile.render === "function") {
+        clearInterval(t);
+        resolve(window.turnstile);
+      } else if (Date.now() - start > timeoutMs) {
+        clearInterval(t);
+        reject(new Error("Turnstile 脚本加载超时，请检查网络或站点是否被拦截"));
+      }
+    }, 120);
+  });
+}
+
+// 弹出 Modal 显示 Turnstile 小部件,并在用户通过验证后 resolve 出 token。
+// 用户关闭弹窗 / 取消时 resolve 为 null。
+async function requestTurnstileToken(action) {
+  let ts;
+  try {
+    ts = await waitForTurnstile();
+  } catch (e) {
+    await Modal.alert(e.message, { type: "danger" });
+    return null;
+  }
+
+  const holder = document.createElement("div");
+  holder.style.minHeight = "70px";
+  holder.style.display = "flex";
+  holder.style.justifyContent = "center";
+  holder.style.alignItems = "center";
+
+  const wrap = document.createElement("div");
+  wrap.appendChild(
+    Object.assign(document.createElement("p"), {
+      textContent: "请先完成下方人机验证后再提交：",
+      style: "margin:0 0 10px;font-size:14px;color:#444",
+    })
+  );
+  wrap.appendChild(holder);
+
+  let widgetId = null;
+  let resolveToken;
+  const tokenPromise = new Promise((r) => (resolveToken = r));
+
+  try {
+    widgetId = ts.render(holder, {
+      sitekey: TURNSTILE_SITE_KEY,
+      action: action || "exam-submit",
+      theme: "auto",
+      callback: (token) => resolveToken(token),
+      "error-callback": () => resolveToken(null),
+      "expired-callback": () => {
+        try { ts.reset(widgetId); } catch (_) { }
+      },
+    });
+  } catch (e) {
+    await Modal.alert("无法初始化人机验证：" + e.message, { type: "danger" });
+    return null;
+  }
+
+  // 弹出 Modal,等待用户操作或验证完成
+  const modalPromise = Modal.open({
+    title: "人机验证",
+    body: wrap,
+    type: "info",
+    buttons: [{ text: "取消", value: null, cancel: true }],
+  });
+
+  const token = await Promise.race([tokenPromise, modalPromise]);
+
+  // 清理小部件
+  try { if (widgetId !== null) ts.remove(widgetId); } catch (_) { }
+  // 若是验证回调先到,则关闭 Modal
+  // (Modal.open 没有外部关闭 API,这里通过模拟 ESC 关闭按钮已不可能;
+  //  退而求其次:让用户看到"已验证"后手动点击。但 UX 更优做法是自动关闭——
+  //  这里用一个小技巧:派发一次 keydown ESC 关闭 modal)
+  if (token) {
+    try {
+      const mask = document.querySelector(".h5m-mask");
+      if (mask) mask.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    } catch (_) { }
+  }
+
+  return token || null;
 }
 
 // ----------------- 视图：首页 -----------------
@@ -159,14 +329,31 @@ async function viewCoursePick() {
 async function startCourseExam(courseId) {
   render(h("div", { class: "loading" }, "组卷中…"));
   try {
-    const exam = await api("GET", `/api/exam/course/${courseId}`);
+    const exam = await examApi("GET", `/api/exam/course/${courseId}`);
     if (!exam.questions || exam.questions.length === 0) {
       render(h("div", { class: "card empty" }, "该课程没有题目。"));
       return;
     }
     startTake(exam);
   } catch (e) {
-    render(h("div", { class: "card empty" }, "加载失败：" + e.message));
+    render(h("div", { class: "card empty" }, "加载失败：" + friendlyExamError(e)));
+  }
+}
+
+// 把后端错误码翻译成用户能看懂的提示
+function friendlyExamError(e) {
+  const code = (e && (e.message || (e.payload && e.payload.error))) || "";
+  switch (code) {
+    case "rate_limited": return "请求过于频繁，请稍后再试";
+    case "missing_session":
+    case "session_invalid":
+    case "session_expired":
+    case "session_ip_mismatch": return "会话已失效，请重新通过人机验证";
+    case "session_quota_exceeded": return "本次会话取卷次数已达上限，请刷新页面重新开始";
+    case "session_course_quota_exceeded": return "本次会话已访问过多门课程，请刷新页面重新开始";
+    case "session_mock_quota_exceeded": return "本次会话模拟卷次数已达上限，请刷新页面重新开始";
+    case "captcha_failed": return "人机验证未通过";
+    default: return code || "未知错误";
   }
 }
 
@@ -288,13 +475,13 @@ async function viewMockSetup() {
       startBtn.disabled = true;
       startBtn.textContent = "组卷中…";
       try {
-        const exam = await api("POST", "/api/exam/mock", {
+        const exam = await examApi("POST", "/api/exam/mock", {
           courseIds: [...selected],
           count,
         });
         startTake(exam);
       } catch (e) {
-        Modal.alert("组卷失败：" + e.message, { type: "danger" });
+        Modal.alert("组卷失败：" + friendlyExamError(e), { type: "danger" });
         startBtn.disabled = false;
         startBtn.textContent = "开始模拟考试";
       }
@@ -526,9 +713,19 @@ function viewTake() {
       return;
     }
 
+    // 提交前先做 Cloudflare Turnstile 人机验证
+    const cfToken = await requestTurnstileToken("exam-submit");
+    if (!cfToken) {
+      await Modal.alert("人机验证未通过,已取消提交。", { type: "warn" });
+      return;
+    }
+
     render(h("div", { class: "loading" }, "批阅中…"));
     try {
-      const result = await api("POST", "/api/exam/grade", { answers: s.answers });
+      const result = await api("POST", "/api/exam/grade", {
+        answers: s.answers,
+        cfTurnstileResponse: cfToken,
+      });
       clearSession();
       sessionStorage.setItem(
         "aalas_exam_last_result",
