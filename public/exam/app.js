@@ -6,8 +6,8 @@ const STORAGE_KEY = "aalas_exam_session_v1";
 // === Cloudflare Turnstile 配置 ===
 // 替换为你在 Cloudflare Dashboard 创建的 Site Key。
 // 测试时可使用官方 dummy key：1x00000000000000000000AA（始终通过）。
-// const TURNSTILE_SITE_KEY = "0x4AAAAAADDHoMAjJ5JCICcf";
-const TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
+const TURNSTILE_SITE_KEY = "0x4AAAAAADDHoMAjJ5JCICcf";
+// const TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
 
 let coursesCache = null;
 
@@ -186,6 +186,23 @@ async function requestTurnstileToken(action) {
   let resolveToken;
   const tokenPromise = new Promise((r) => (resolveToken = r));
 
+  // 先弹出 Modal，确保 holder 已挂到 DOM 中再渲染 Turnstile，
+  // 否则 widget 在 detached 节点里初始化会触发
+  // “Form submission canceled because the form is not connected”
+  // 以及 Turnstile Error 600010。
+  const modalPromise = Modal.open({
+    title: "人机验证",
+    body: wrap,
+    type: "info",
+    buttons: [{ text: "取消", value: null, cancel: true }],
+  });
+
+  if (!holder.isConnected) {
+    try { if (typeof Modal.close === "function") Modal.close(); } catch (_) { }
+    await Modal.alert("无法初始化人机验证：弹窗未正确挂载", { type: "danger" });
+    return null;
+  }
+
   try {
     widgetId = ts.render(holder, {
       sitekey: TURNSTILE_SITE_KEY,
@@ -198,17 +215,13 @@ async function requestTurnstileToken(action) {
       },
     });
   } catch (e) {
+    try {
+      const mask = document.querySelector(".h5m-mask");
+      if (mask) mask.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    } catch (_) { }
     await Modal.alert("无法初始化人机验证：" + e.message, { type: "danger" });
     return null;
   }
-
-  // 弹出 Modal,等待用户操作或验证完成
-  const modalPromise = Modal.open({
-    title: "人机验证",
-    body: wrap,
-    type: "info",
-    buttons: [{ text: "取消", value: null, cancel: true }],
-  });
 
   const token = await Promise.race([tokenPromise, modalPromise]);
 
