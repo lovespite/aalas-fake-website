@@ -7,83 +7,93 @@
     </div>
 </section>
 <div class="container-fluid container-fullw bg-white">
+    <div
+        style="padding: 12px; border: 1px solid #ff6a00; background-color: #fff3e0; margin-bottom: 4px; border-radius: 6px;">
+        ⚠️
+        <strong>
+            Visit the <a href="https://exam.aalas.net/" target="_blank">exam
+                portal</a> to
+            take the final exam. Here you can review the questions and practice answering them, but your
+            responses will NOT be saved or graded.
+        </strong><br />
+        访问<a href="https://exam.aalas.net/" target="_blank">考试门户网站(exam.aalas.net)</a>参加考试。在这里您可以查看问题并练习回答，但您的回答将不会被保存或评分。
+
+    </div>
     <div class="row">
-         <div class="col-sm-12">
-             <div class="panel panel-themed" id="panel6" ng-repeat="item in view.items | offset: view.currentQuestion*view.itemsPerPage | limitTo: view.itemsPerPage">
+        <div class="col-sm-12">
+            <div class="panel panel-themed" id="panel6"
+                ng-repeat="item in view.items | offset: view.currentQuestion*view.itemsPerPage | limitTo: view.itemsPerPage">
                 <div class="panel-heading themed" ng-switch on="item.type">
 
-                     <div class="text-small" ng-switch-when="2">{{(view.currentQuestion +1) + ' of '+view.items.length + ': Multiple Choice/Multiple Answer - select all correct answers'}}</div>
-                     <div class="text-small" ng-switch-when="3">{{(view.currentQuestion +1) + ' of '+view.items.length + ': True/False - select one answer'}}</div>
-                     <div class="text-small" ng-switch-default>{{(view.currentQuestion +1) + ' of '+view.items.length + ': Multiple Choice/Single Answer - select one answer'}}</div>
+                    <div class="text-small" ng-switch-when="2">{{(view.currentQuestion +1) + ' of '+view.items.length +
+                        ': Multiple Choice/Multiple Answer - select all correct answers'}}</div>
+                    <div class="text-small" ng-switch-when="3">{{(view.currentQuestion +1) + ' of '+view.items.length +
+                        ': True/False - select one answer'}}</div>
+                    <div class="text-small" ng-switch-default>{{(view.currentQuestion +1) + ' of '+view.items.length +
+                        ': Multiple Choice/Single Answer - select one answer'}}</div>
                 </div>
                 <div class="panel-body text-dark" ng-switch on="item.type">
 
                     <div class="stem" ng-bind-html="::item.content"></div>
-<div ng-if="item.image"><img ng-src="{{::item.image}}"></div>
-                    <hr/>
-                     <div ng-repeat="answer in item.answers">
-                         <div ng-switch-when="2" class="checkbox clip-check check-primary">
-                             <input type="checkbox" ng-change="view.saveMultipleAnswer(view.exam.id,item.id)" ng-model="answer.response" id="{{'checkbox'+answer.id}}" name="{{::item.id}}" value="{{::answer.id}}">
-                             <label for="{{'checkbox'+answer.id}}" class="text-dark" ng-bind-html="::answer.content">
-                             </label>
-                         </div>
-                         <div ng-switch-when="3" class="radio clip-radio radio-primary">
-                             <input type="radio" ng-change="view.saveAnswer(view.exam.id,item.id,answer.id)" ng-model="item.response" ng-attr-id="{{'radio'+answer.id}}" name="{{::item.id}}" value="{{::answer.id}}">
+                    <div ng-if="item.image"><img ng-src="{{::item.image}}"></div>
 
-                             <label for="{{'radio'+answer.id}}" class="text-dark" ng-bind-html="::answer.content">
-                             </label>
-                         </div>
-                         <div ng-switch-default class="radio clip-radio radio-primary">
-                             <input type="radio" ng-change="view.saveAnswer(view.exam.id,item.id,answer.id)" ng-model="item.response" ng-attr-id="{{'radio'+answer.id}}" name="{{::item.id}}" value="{{::answer.id}}">
-
-                             <label for="{{'radio'+answer.id}}" class="text-dark" ng-bind-html="::answer.content">
-                             </label>
-                         </div>
-                     </div>
-                     <div class="checkbox clip-check check-primary pull-right">
-                         <input type="checkbox" ng-model="item.mark" id="{{'mark'+item.id}}" checked="" ng-checked="item.mark"  value="{{::question.id}}">
-                         <label for="{{'mark'+item.id}}">
-                            Mark
-                         </label>
-                     </div>
+                    <hr />
+                    <div ng-repeat="answer in item.answers">
+                        <div ng-switch-when="2" class="checkbox clip-check check-primary">
+                            <input type="checkbox" ng-model="answer.response" id="{{'checkbox'+answer.id}}"
+                                name="{{::item.id}}" value="{{::answer.id}}">
+                            <label for="{{'checkbox'+answer.id}}" class="text-dark" ng-bind-html="::answer.content">
+                            </label>
                         </div>
-                  </div>
+                        <div ng-switch-when="3" class="radio clip-radio radio-primary">
+                            <input type="radio" ng-model="item.response" ng-attr-id="{{'radio'+answer.id}}"
+                                name="{{::item.id}}" value="{{::answer.id}}">
 
-             <div ng-if="view.items.length > 0">
-                     <ul class="pagination pagination-blue">
-                         <li ng-if="view.prevQuestionVisible()">
-                             <a href="#"  ng-click="view.prevQuestion()">« Prev</a>
-                         </li>
-                         <li ng-repeat="n in view.range()" ng-class="{markactive:(n == view.currentQuestion && view.items[n].mark),active: n == view.currentQuestion && !view.items[n].mark, mark: n !== view.currentQuestion && view.items[n].mark}" ng-click="view.setQuestion(n)">
-                             <a href="#">{{n+1}}</a>
-                         </li>
-                         <li ng-if="view.nextQuestionVisible()">
-                             <a href="#" ng-click="view.nextQuestion()">Next »</a>
-                         </li>
-                      </ul>
-                 <div>
-                     <div class="pull-right">
-                         <div class="text-danger" ng-if="view.markedCount()>0">Marked: <span ng-bind="view.markedCount()"></span></div>
-                         <div class="text-danger" ng-if="view.unansweredCount()>0">Unanswered: <span ng-bind="view.unansweredCount()"></span></div>
-                         <div>
-                             <div class="pull-right">
-                                <span>
-                                    <button type="submit" class="btn btn-themed" ng-show="nextPage==null" ng-click="view.scoreExam()">
-                                        Score Exam  <i class="fa fa-arrow-circle-right"></i>
-                                    </button>
-                                </span>
-                                 <span>
-                                    <button class="btn btn-default btn-o" ng-click="view.feedback();"><i class="fa fa-comment"></i> Comment</button>
-                                 </span>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+                            <label for="{{'radio'+answer.id}}" class="text-dark" ng-bind-html="::answer.content">
+                            </label>
+                        </div>
+                        <div ng-switch-default class="radio clip-radio radio-primary">
+                            <input type="radio" ng-model="item.response" ng-attr-id="{{'radio'+answer.id}}"
+                                name="{{::item.id}}" value="{{::answer.id}}">
+
+                            <label for="{{'radio'+answer.id}}" class="text-dark" ng-bind-html="::answer.content">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkbox clip-check check-primary pull-right">
+                        <input type="checkbox" ng-model="item.mark" id="{{'mark'+item.id}}" checked=""
+                            ng-checked="item.mark" value="{{::question.id}}">
+                        <label for="{{'mark'+item.id}}">
+                            Mark
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="view.items.length > 0">
+                <ul class="pagination pagination-blue">
+                    <li ng-if="view.prevQuestionVisible()">
+                        <a href="#" ng-click="view.prevQuestion()">« Prev</a>
+                    </li>
+                    <li ng-repeat="n in view.range()"
+                        ng-class="{markactive:(n == view.currentQuestion && view.items[n].mark),active: n == view.currentQuestion && !view.items[n].mark, mark: n !== view.currentQuestion && view.items[n].mark}"
+                        ng-click="view.setQuestion(n)">
+                        <a href="#">{{n+1}}</a>
+                    </li>
+                    <li ng-if="view.nextQuestionVisible()">
+                        <a href="#" ng-click="view.nextQuestion()">Next »</a>
+                    </li>
+                </ul>
+                <div>
+                    <div class="pull-right">
+                        <div class="text-danger" ng-if="view.markedCount()>0">Marked: <span
+                                ng-bind="view.markedCount()"></span></div>
+                        <div class="text-danger" ng-if="view.unansweredCount()>0">Unanswered: <span
+                                ng-bind="view.unansweredCount()"></span></div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
 </div>
-
-
-

@@ -14,62 +14,9 @@
     off-click="navbarCollapsed = true" off-click-if="!navbarCollapsed" off-click-filter="#menu-toggler">
     <ul class="nav navbar-right" ct-fullheight="window" data-ct-fullheight-exclusion="header"
       data-ct-fullheight-if="isSmallDevice">
-      <li>
-        <a ui-sref="app.help"><span><i class="ti-help-alt"></i> <span>HELP</span></span></a>
-      </li>
-      <li class="dropdown" uib-dropdown on-toggle="toggled(open)"
-        ng-if="group.type!=='individual' && group.type!=='free'">
-        <a class="dropdown-toggle" uib-dropdown-toggle><span><i class="fa fa-group fa-inverse"></i> <span>GROUP
-              CONTACT</span></span></a>
-        <ul class="dropdown-menu dropdown-light">
-          <li style="text-overflow: ellipsis">
-            <a href="mailto:{{coordinator.email}}">Group: <span ng-bind="group.title"></span></a>
-          </li>
-          <li style="text-overflow: ellipsis">
-            <a href="mailto:{{coordinator.email}}">Contact: <span ng-bind="coordinator.title"></span></a>
-          </li>
-          <li style="text-overflow: ellipsis">
-            <a href="mailto:{{coordinator.email}}">Email: <span ng-bind="coordinator.email"></span></a>
-          </li>
-        </ul>
-      </li>
-      <li class="dropdown" uib-dropdown on-toggle="toggled(open)"
-        ng-if="group.type!=='individual' && assignments.length">
-        <a class="dropdown-toggle" uib-dropdown-toggle><notification-icon count="assignments.length"><i
-              class="ti-check-box"></i></notification-icon><span>ASSIGNMENTS</span></a>
-        <ul class="dropdown-menu dropdown-light" style="max-height:400px; overflow-x:hidden; overflow-y:scroll;">
-          <li ng-repeat="assignment in assignments">
-            <a class="list-group-item" ui-sref="app.library.course({id:assignment.id})"><span
-                class="media-body block no-margin">{{assignment.title}} <span><small
-                    class="block text-dark">{{assignment.type}} - Due: {{assignment.period==0?'Anytime':(assignment.due
-                    | amUtc | amDateFormat:'MM/DD/YYYY')}}</small></span></span></a>
-          </li>
-        </ul>
-      </li>
+
       <li class="dropdown current-user" uib-dropdown on-toggle="toggled(open)">
-        <a class="dropdown-toggle" uib-dropdown-toggle><img ng-src="{{avatar()}}"
-            src="'/assets/images/default-user.png'"> <span ng-bind="member.title"></span><i
-            class="ti-angle-down"></i></a>
-        <ul class="dropdown-menu dropdown-dark">
-          <li>
-            <a ui-sref="app.user">My Profile</a>
-          </li>
-          <li>
-            <a ui-sref="app.transcript">My Transcript</a>
-          </li>
-          <li ng-if="subscription.isGroupCoordinator">
-            <a ui-sref="app.subscriptions">My Subscriptions</a>
-          </li>
-          <li ng-if="!subscription.isGroupCoordinator">
-            <a ui-sref="app.groupMemberOrders">My Orders</a>
-          </li>
-          <li ng-if="!subscription.isGroupCoordinator && !member.race && member.status">
-            <a style="color: gold;" ui-sref="app.upgradeGroupMember">Upgrade to RACE CEs</a>
-          </li>
-          <li>
-            <a ui-sref="login.signout">Log Out</a>
-          </li>
-        </ul>
+        <a class="dropdown-toggle" uib-dropdown-toggle><span>Lovespite</span> </a>
       </li>
     </ul>
     <div class="close-handle visible-xs-block menu-toggler" ng-click="navbarCollapsed = true">
