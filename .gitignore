@@ -5,5 +5,5 @@ public/Images/
 dist_static/
 .env
 .DS_Store
-apps.ecosystem.config.js
+ecosystem.config.js
 *.log
