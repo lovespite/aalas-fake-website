@@ -23,13 +23,9 @@ app.controller('loginCtrl', ['$window', 'authService', '$http', '$state', functi
         });
     };
     vm.loginSSO = function () {
-        $window.location.href = 'https://sso.aalaslearninglibrary.org/Shibboleth.sso/Login?entityID=' + encodeURIComponent(vm.idp);
     };
     vm.getSSOGroups = function () {
-        $http.get('https://sso.aalaslearninglibrary.org/api/SSOGroups')
-            .success(function (data) {
-                vm.ssoGroups = data;
-            });
+        vm.ssoGroups = [];
     }
     if ($state.includes('login.signout'))
         authService.logOut();
