@@ -9,6 +9,30 @@
   gtag('config', 'G-J1K0RK7NK4');
 </script>
     <base href="/" />
+    <!-- ===== Static-build bootstrap: SW + auth seed ===== -->
+    <script>
+    (function () {
+      try {
+        var KEY = 'ngStorage-authorizationData';
+        if (!sessionStorage.getItem(KEY)) {
+          sessionStorage.setItem(KEY, JSON.stringify({
+            token: 'mock-token-aalas-offline',
+            userName: 'demo',
+            isAuth: true,
+            useRefreshTokens: false
+          }));
+        }
+      } catch (e) {}
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(function (reg) {
+          if (!navigator.serviceWorker.controller) {
+            navigator.serviceWorker.addEventListener('controllerchange', function () { location.reload(); });
+          }
+        }).catch(function (e) { console.warn('[sw] register failed', e); });
+      }
+    })();
+    </script>
+    <!-- ===== /bootstrap ===== -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="AALAS Learning Library">

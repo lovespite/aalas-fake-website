@@ -2,6 +2,7 @@ node_modules/
 .playwright-data/
 mock_data/
 public/Images/
+dist_static/
 .env
 .DS_Store
 apps.ecosystem.config.js
